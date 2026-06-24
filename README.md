@@ -36,6 +36,19 @@ acepta **Contraseñas de aplicación** de WordPress (Basic Auth sobre HTTPS):
 | `create-post` / `update-post` / `delete-post` | Crear / editar / borrar contenido |
 | `get-option` / `update-option` | Leer / escribir opciones del sitio |
 
+### Herramientas ACF (solo si Advanced Custom Fields está activo)
+
+| Herramienta | Función ACF |
+|-------------|-------------|
+| `acf-get-field` / `acf-update-field` / `acf-delete-field` | `get_field` / `update_field` / `delete_field` |
+| `acf-get-field-object` / `acf-get-field-objects` | `get_field_object` / `get_field_objects` |
+| `acf-get-fields` | `get_fields` |
+| `acf-add-row` / `acf-update-row` / `acf-delete-row` | `add_row` / `update_row` / `delete_row` (repeater) |
+| `acf-list-field-groups` / `acf-get-field-group` | `acf_get_field_groups` / `acf_get_field_group` |
+| `acf-get-fields-in-group` | `acf_get_fields` |
+| `acf-create-field-group` / `acf-update-field-group` / `acf-delete-field-group` | `acf_import_field_group` / `acf_update_field_group` / `acf_delete_field_group` |
+| `acf-export-field-group` | `acf_export_field_group` |
+
 ## Desarrollo
 
 Las dependencias se gestionan con Composer y **se versionan en `vendor/`** para que el

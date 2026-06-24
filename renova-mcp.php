@@ -34,6 +34,7 @@ if ( is_readable( $renova_mcp_autoload ) ) {
 	require_once $renova_mcp_autoload;
 }
 require_once RENOVA_MCP_DIR . 'includes/class-abilities.php';
+require_once RENOVA_MCP_DIR . 'includes/class-acf-abilities.php';
 
 /**
  * Inicializa el MCP Adapter. Su instancia engancha la creación de servidores
@@ -62,6 +63,9 @@ add_action(
 add_action( 'wp_abilities_api_categories_init', array( Abilities::class, 'register_category' ) );
 add_action( 'wp_abilities_api_init', array( Abilities::class, 'register' ) );
 
+// Abilities ACF: solo se registran si Advanced Custom Fields está activo.
+add_action( 'wp_abilities_api_init', array( Acf_Abilities::class, 'register' ) );
+
 /**
  * Crea el servidor MCP exponiendo las abilities como herramientas (tools).
  *
@@ -75,12 +79,15 @@ add_action(
 			RENOVA_MCP_ROUTE_NAMESPACE,
 			RENOVA_MCP_ROUTE,
 			'Renova MCP Control',
-			'Control total de WordPress: gestión de plugins, temas, páginas, entradas y opciones del sitio.',
+			'Control total de WordPress: plugins, temas, páginas, entradas, opciones y campos ACF.',
 			RENOVA_MCP_VERSION,
 			array( \WP\MCP\Transport\HttpTransport::class ),
 			\WP\MCP\Infrastructure\ErrorHandling\ErrorLogMcpErrorHandler::class,
 			\WP\MCP\Infrastructure\Observability\NullMcpObservabilityHandler::class,
-			Abilities::tool_ids()
+			// Incluye las herramientas ACF solo si el plugin está activo.
+			Acf_Abilities::is_available()
+				? array_merge( Abilities::tool_ids(), Acf_Abilities::tool_ids() )
+				: Abilities::tool_ids()
 		);
 	}
 );
