@@ -84,10 +84,9 @@ add_action(
 			array( \WP\MCP\Transport\HttpTransport::class ),
 			\WP\MCP\Infrastructure\ErrorHandling\ErrorLogMcpErrorHandler::class,
 			\WP\MCP\Infrastructure\Observability\NullMcpObservabilityHandler::class,
-			// Incluye las herramientas ACF solo si el plugin está activo.
-			Acf_Abilities::is_available()
-				? array_merge( Abilities::tool_ids(), Acf_Abilities::tool_ids() )
-				: Abilities::tool_ids()
+			// Siempre se exponen las herramientas ACF; si ACF no está activo,
+			// cada herramienta devuelve un WP_Error claro al ejecutarse.
+			array_merge( Abilities::tool_ids(), Acf_Abilities::tool_ids() )
 		);
 	}
 );

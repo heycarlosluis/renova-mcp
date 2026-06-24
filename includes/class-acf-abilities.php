@@ -75,13 +75,14 @@ class Acf_Abilities {
 	}
 
 	/**
-	 * Registra todas las abilities ACF (solo si ACF está activo).
+	 * Registra todas las abilities ACF.
+	 *
+	 * Se registran siempre (el registro solo define las herramientas, no llama a
+	 * la API de ACF). Si ACF no está activo en tiempo de ejecución, cada callback
+	 * devuelve un WP_Error claro mediante guard(). Esto evita depender del orden
+	 * de carga de ACF en el instante en que se construye el servidor MCP.
 	 */
 	public static function register() {
-		if ( ! self::is_available() ) {
-			return;
-		}
-
 		$obj      = array( 'type' => 'object' );
 		$post_id  = array(
 			'type'        => array( 'string', 'integer' ),
