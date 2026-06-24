@@ -1,0 +1,18 @@
+{
+    "name": "renova/renova-mcp",
+    "description": "Servidor MCP para control total de WordPress (renova) vía Abilities API + WordPress MCP Adapter.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": ">=7.4",
+        "wordpress/mcp-adapter": "^0.5",
+        "automattic/jetpack-autoloader": "^5.0 || ^4.0 || ^3.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "automattic/jetpack-autoloader": true,
+            "composer/installers": true
+        },
+        "optimize-autoloader": true
+    }
+}
