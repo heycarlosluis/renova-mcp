@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Renova MCP Control
  * Plugin URI:        https://github.com/heycarlosluis/renova
- * Description:       Servidor MCP para control total de WordPress (plugins, temas, páginas, entradas y opciones) vía la Abilities API + WordPress MCP Adapter.
+ * Description:       Servidor MCP para control total de WordPress (plugins, temas, contenido, CPT y taxonomías vía ACF, términos, meta y opciones) vía la Abilities API + WordPress MCP Adapter.
  * Version:           1.0.0
  * Requires at least: 6.9
  * Requires PHP:      7.4
@@ -35,6 +35,8 @@ if ( is_readable( $renova_mcp_autoload ) ) {
 }
 require_once RENOVA_MCP_DIR . 'includes/class-abilities.php';
 require_once RENOVA_MCP_DIR . 'includes/class-acf-abilities.php';
+require_once RENOVA_MCP_DIR . 'includes/class-acf-types-abilities.php';
+require_once RENOVA_MCP_DIR . 'includes/class-taxonomy-abilities.php';
 
 /**
  * Inicializa el MCP Adapter. Su instancia engancha la creación de servidores
@@ -63,8 +65,14 @@ add_action(
 add_action( 'wp_abilities_api_categories_init', array( Abilities::class, 'register_category' ) );
 add_action( 'wp_abilities_api_init', array( Abilities::class, 'register' ) );
 
-// Abilities ACF: solo se registran si Advanced Custom Fields está activo.
+// Abilities ACF (valores y grupos de campos).
 add_action( 'wp_abilities_api_init', array( Acf_Abilities::class, 'register' ) );
+
+// Abilities ACF para CPT y taxonomías (registro de tipos vía ACF 6.1+).
+add_action( 'wp_abilities_api_init', array( Acf_Types_Abilities::class, 'register' ) );
+
+// Abilities de taxonomías y términos nativos de WordPress.
+add_action( 'wp_abilities_api_init', array( Taxonomy_Abilities::class, 'register' ) );
 
 /**
  * Crea el servidor MCP exponiendo las abilities como herramientas (tools).
@@ -79,14 +87,19 @@ add_action(
 			RENOVA_MCP_ROUTE_NAMESPACE,
 			RENOVA_MCP_ROUTE,
 			'Renova MCP Control',
-			'Control total de WordPress: plugins, temas, páginas, entradas, opciones y campos ACF.',
+			'Control total de WordPress: plugins, temas, contenido (cualquier CPT), meta, opciones, campos ACF, y registro de Custom Post Types y taxonomías vía ACF, además de términos.',
 			RENOVA_MCP_VERSION,
 			array( \WP\MCP\Transport\HttpTransport::class ),
 			\WP\MCP\Infrastructure\ErrorHandling\ErrorLogMcpErrorHandler::class,
 			\WP\MCP\Infrastructure\Observability\NullMcpObservabilityHandler::class,
 			// Siempre se exponen las herramientas ACF; si ACF no está activo,
 			// cada herramienta devuelve un WP_Error claro al ejecutarse.
-			array_merge( Abilities::tool_ids(), Acf_Abilities::tool_ids() )
+			array_merge(
+				Abilities::tool_ids(),
+				Acf_Abilities::tool_ids(),
+				Acf_Types_Abilities::tool_ids(),
+				Taxonomy_Abilities::tool_ids()
+			)
 		);
 	}
 );

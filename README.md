@@ -32,9 +32,21 @@ acepta **Contraseñas de aplicación** de WordPress (Basic Auth sobre HTTPS):
 | `install-plugin` | Instalar desde WordPress.org (por slug) |
 | `delete-plugin` | Eliminar un plugin del servidor |
 | `list-themes` / `activate-theme` | Listar / cambiar el tema activo |
-| `list-posts` | Listar entradas o páginas |
-| `create-post` / `update-post` / `delete-post` | Crear / editar / borrar contenido |
+| `list-posts` | Listar entradas, páginas o CPT |
+| `get-post` | Obtener un contenido completo (campos, meta y términos) |
+| `create-post` / `update-post` / `delete-post` | Crear / editar / borrar contenido (cualquier `post_type`) |
+| `get-post-meta` / `update-post-meta` / `delete-post-meta` | Leer / escribir / borrar metadatos de contenido |
 | `get-option` / `update-option` | Leer / escribir opciones del sitio |
+
+### Tipos de contenido y taxonomías (nativo de WordPress)
+
+| Herramienta | Acción |
+|-------------|--------|
+| `list-post-types` | Listar todos los post types registrados |
+| `list-taxonomies` | Listar todas las taxonomías registradas |
+| `list-terms` / `get-term` | Listar / obtener términos de una taxonomía |
+| `create-term` / `update-term` / `delete-term` | Crear / editar / borrar términos |
+| `set-post-terms` / `get-post-terms` | Asignar / leer términos de una entrada o CPT |
 
 ### Herramientas ACF (solo si Advanced Custom Fields está activo)
 
@@ -48,6 +60,17 @@ acepta **Contraseñas de aplicación** de WordPress (Basic Auth sobre HTTPS):
 | `acf-get-fields-in-group` | `acf_get_fields` |
 | `acf-create-field-group` / `acf-update-field-group` / `acf-delete-field-group` | `acf_import_field_group` / `acf_update_field_group` / `acf_delete_field_group` |
 | `acf-export-field-group` | `acf_export_field_group` |
+
+#### Custom Post Types y taxonomías vía ACF (ACF 6.1+)
+
+| Herramienta | Función ACF |
+|-------------|-------------|
+| `acf-list-post-types` / `acf-get-post-type` | `acf_get_acf_post_types` / `acf_get_post_type` |
+| `acf-save-post-type` / `acf-delete-post-type` | `acf_update_post_type` / `acf_delete_post_type` |
+| `acf-export-post-type` | `acf_prepare_post_type_for_export` |
+| `acf-list-taxonomies` / `acf-get-taxonomy` | `acf_get_acf_taxonomies` / `acf_get_taxonomy` |
+| `acf-save-taxonomy` / `acf-delete-taxonomy` | `acf_update_taxonomy` / `acf_delete_taxonomy` |
+| `acf-export-taxonomy` | `acf_prepare_taxonomy_for_export` |
 
 ## Desarrollo
 

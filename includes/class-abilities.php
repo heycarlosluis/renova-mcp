@@ -35,9 +35,13 @@ class Abilities {
 			'renova-mcp/list-themes',
 			'renova-mcp/activate-theme',
 			'renova-mcp/list-posts',
+			'renova-mcp/get-post',
 			'renova-mcp/create-post',
 			'renova-mcp/update-post',
 			'renova-mcp/delete-post',
+			'renova-mcp/get-post-meta',
+			'renova-mcp/update-post-meta',
+			'renova-mcp/delete-post-meta',
 			'renova-mcp/get-option',
 			'renova-mcp/update-option',
 		);
@@ -257,6 +261,29 @@ class Abilities {
 		);
 
 		wp_register_ability(
+			'renova-mcp/get-post',
+			array(
+				'label'               => __( 'Obtener contenido', 'renova-mcp' ),
+				'description'         => __( 'Devuelve una entrada/página/CPT completa por su ID: campos del post, meta y términos de todas sus taxonomías.', 'renova-mcp' ),
+				'category'            => self::CATEGORY,
+				'input_schema'        => array(
+					'type'       => 'object',
+					'properties' => array(
+						'id' => array(
+							'type'        => 'integer',
+							'description' => __( 'ID del contenido.', 'renova-mcp' ),
+						),
+					),
+					'required'   => array( 'id' ),
+				),
+				'output_schema'       => $obj,
+				'execute_callback'    => array( __CLASS__, 'get_post' ),
+				'permission_callback' => array( __CLASS__, 'can_manage' ),
+				'meta'                => array( 'annotations' => array( 'readonly' => true ) ),
+			)
+		);
+
+		wp_register_ability(
 			'renova-mcp/create-post',
 			array(
 				'label'               => __( 'Crear entrada o página', 'renova-mcp' ),
@@ -350,6 +377,90 @@ class Abilities {
 				),
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'delete_post' ),
+				'permission_callback' => array( __CLASS__, 'can_manage' ),
+				'meta'                => array( 'annotations' => array( 'destructive' => true ) ),
+			)
+		);
+
+		// --- Post meta ------------------------------------------------------------
+		wp_register_ability(
+			'renova-mcp/get-post-meta',
+			array(
+				'label'               => __( 'Leer meta de contenido', 'renova-mcp' ),
+				'description'         => __( 'Devuelve los metadatos de una entrada/CPT. Si se indica "key", devuelve solo esa clave; si no, todas. Envuelve get_post_meta().', 'renova-mcp' ),
+				'category'            => self::CATEGORY,
+				'input_schema'        => array(
+					'type'       => 'object',
+					'properties' => array(
+						'id'  => array(
+							'type'        => 'integer',
+							'description' => __( 'ID del contenido.', 'renova-mcp' ),
+						),
+						'key' => array(
+							'type'        => 'string',
+							'description' => __( 'Clave meta concreta (opcional).', 'renova-mcp' ),
+						),
+					),
+					'required'   => array( 'id' ),
+				),
+				'output_schema'       => $obj,
+				'execute_callback'    => array( __CLASS__, 'get_post_meta' ),
+				'permission_callback' => array( __CLASS__, 'can_manage' ),
+				'meta'                => array( 'annotations' => array( 'readonly' => true ) ),
+			)
+		);
+
+		wp_register_ability(
+			'renova-mcp/update-post-meta',
+			array(
+				'label'               => __( 'Actualizar meta de contenido', 'renova-mcp' ),
+				'description'         => __( 'Crea o actualiza un metadato de una entrada/CPT. Envuelve update_post_meta(). Para campos ACF usa preferiblemente acf-update-field.', 'renova-mcp' ),
+				'category'            => self::CATEGORY,
+				'input_schema'        => array(
+					'type'       => 'object',
+					'properties' => array(
+						'id'    => array(
+							'type'        => 'integer',
+							'description' => __( 'ID del contenido.', 'renova-mcp' ),
+						),
+						'key'   => array(
+							'type'        => 'string',
+							'description' => __( 'Clave meta.', 'renova-mcp' ),
+						),
+						'value' => array(
+							'description' => __( 'Valor (texto, número, booleano, array u objeto).', 'renova-mcp' ),
+						),
+					),
+					'required'   => array( 'id', 'key', 'value' ),
+				),
+				'output_schema'       => $obj,
+				'execute_callback'    => array( __CLASS__, 'update_post_meta' ),
+				'permission_callback' => array( __CLASS__, 'can_manage' ),
+			)
+		);
+
+		wp_register_ability(
+			'renova-mcp/delete-post-meta',
+			array(
+				'label'               => __( 'Eliminar meta de contenido', 'renova-mcp' ),
+				'description'         => __( 'Elimina un metadato de una entrada/CPT. Acción destructiva. Envuelve delete_post_meta().', 'renova-mcp' ),
+				'category'            => self::CATEGORY,
+				'input_schema'        => array(
+					'type'       => 'object',
+					'properties' => array(
+						'id'  => array(
+							'type'        => 'integer',
+							'description' => __( 'ID del contenido.', 'renova-mcp' ),
+						),
+						'key' => array(
+							'type'        => 'string',
+							'description' => __( 'Clave meta a eliminar.', 'renova-mcp' ),
+						),
+					),
+					'required'   => array( 'id', 'key' ),
+				),
+				'output_schema'       => $obj,
+				'execute_callback'    => array( __CLASS__, 'delete_post_meta' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
 				'meta'                => array( 'annotations' => array( 'destructive' => true ) ),
 			)
@@ -811,6 +922,127 @@ class Abilities {
 			'id'        => $id,
 			'permanent' => $force,
 			'message'   => $force ? 'Contenido eliminado definitivamente.' : 'Contenido enviado a la papelera.',
+		);
+	}
+
+	/**
+	 * Devuelve un contenido completo: campos, meta y términos.
+	 *
+	 * @param array $input Entrada.
+	 * @return array|\WP_Error
+	 */
+	public static function get_post( $input ) {
+		$id   = isset( $input['id'] ) ? (int) $input['id'] : 0;
+		$post = $id ? get_post( $id ) : null;
+		if ( ! $post ) {
+			return new \WP_Error( 'renova_mcp_post_not_found', 'No se encontró el contenido indicado.' );
+		}
+
+		$terms = array();
+		foreach ( get_object_taxonomies( $post->post_type ) as $taxonomy ) {
+			$assigned = wp_get_object_terms( $id, $taxonomy );
+			if ( is_wp_error( $assigned ) || empty( $assigned ) ) {
+				continue;
+			}
+			$terms[ $taxonomy ] = array_map(
+				static function ( $t ) {
+					return array(
+						'term_id' => (int) $t->term_id,
+						'name'    => $t->name,
+						'slug'    => $t->slug,
+					);
+				},
+				$assigned
+			);
+		}
+
+		return array(
+			'id'        => $post->ID,
+			'title'     => $post->post_title,
+			'content'   => $post->post_content,
+			'excerpt'   => $post->post_excerpt,
+			'status'    => $post->post_status,
+			'type'      => $post->post_type,
+			'slug'      => $post->post_name,
+			'parent'    => (int) $post->post_parent,
+			'author'    => (int) $post->post_author,
+			'url'       => get_permalink( $post ),
+			'edit'      => get_edit_post_link( $post->ID, 'raw' ),
+			'modified'  => $post->post_modified_gmt,
+			'meta'      => get_post_meta( $id ),
+			'terms'     => $terms,
+		);
+	}
+
+	/**
+	 * Lee metadatos de un contenido.
+	 *
+	 * @param array $input Entrada.
+	 * @return array|\WP_Error
+	 */
+	public static function get_post_meta( $input ) {
+		$id = isset( $input['id'] ) ? (int) $input['id'] : 0;
+		if ( ! $id || ! get_post( $id ) ) {
+			return new \WP_Error( 'renova_mcp_post_not_found', 'No se encontró el contenido indicado.' );
+		}
+		$key = isset( $input['key'] ) ? (string) $input['key'] : '';
+		if ( '' !== $key ) {
+			return array(
+				'id'    => $id,
+				'key'   => $key,
+				'value' => get_post_meta( $id, $key, true ),
+			);
+		}
+		return array(
+			'id'   => $id,
+			'meta' => get_post_meta( $id ),
+		);
+	}
+
+	/**
+	 * Crea o actualiza un metadato.
+	 *
+	 * @param array $input Entrada.
+	 * @return array|\WP_Error
+	 */
+	public static function update_post_meta( $input ) {
+		$id  = isset( $input['id'] ) ? (int) $input['id'] : 0;
+		$key = isset( $input['key'] ) ? (string) $input['key'] : '';
+		if ( ! $id || ! get_post( $id ) ) {
+			return new \WP_Error( 'renova_mcp_post_not_found', 'No se encontró el contenido indicado.' );
+		}
+		if ( '' === $key ) {
+			return new \WP_Error( 'renova_mcp_missing_meta_key', 'Falta la clave meta.' );
+		}
+		update_post_meta( $id, $key, $input['value'] );
+		return array(
+			'success' => true,
+			'id'      => $id,
+			'key'     => $key,
+			'value'   => get_post_meta( $id, $key, true ),
+		);
+	}
+
+	/**
+	 * Elimina un metadato.
+	 *
+	 * @param array $input Entrada.
+	 * @return array|\WP_Error
+	 */
+	public static function delete_post_meta( $input ) {
+		$id  = isset( $input['id'] ) ? (int) $input['id'] : 0;
+		$key = isset( $input['key'] ) ? (string) $input['key'] : '';
+		if ( ! $id || ! get_post( $id ) ) {
+			return new \WP_Error( 'renova_mcp_post_not_found', 'No se encontró el contenido indicado.' );
+		}
+		if ( '' === $key ) {
+			return new \WP_Error( 'renova_mcp_missing_meta_key', 'Falta la clave meta.' );
+		}
+		$ok = delete_post_meta( $id, $key );
+		return array(
+			'success' => (bool) $ok,
+			'id'      => $id,
+			'key'     => $key,
 		);
 	}
 
