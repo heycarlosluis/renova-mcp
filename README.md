@@ -72,6 +72,34 @@ acepta **Contraseñas de aplicación** de WordPress (Basic Auth sobre HTTPS):
 | `acf-save-taxonomy` / `acf-delete-taxonomy` | `acf_update_taxonomy` / `acf_delete_taxonomy` |
 | `acf-export-taxonomy` | `acf_prepare_taxonomy_for_export` |
 
+### Herramientas Elementor / Elementor Pro (solo si Elementor está activo)
+
+Operan directamente sobre el árbol JSON de `_elementor_data`, regenerando la caché de CSS
+tras cada cambio. Si Elementor no está activo, cada herramienta devuelve un `WP_Error` claro.
+
+| Herramienta | Acción |
+|-------------|--------|
+| `elementor-list-content` | Listar páginas/CPT indicando cuáles usan Elementor |
+| `elementor-get-data` | Árbol JSON completo de una página |
+| `elementor-get-structure` | Esquema simplificado (id, tipo, widgetType, vista previa de texto) |
+| `elementor-get-element` | Un elemento concreto por su id |
+| `elementor-find-elements` | Buscar elementos por `widgetType` o `elType` |
+| `elementor-get-page-settings` | Ajustes de página (`_elementor_page_settings`) |
+| `elementor-update-data` | Reemplazar todo el árbol (con copia de seguridad automática) |
+| `elementor-update-element` | Fusionar/reemplazar ajustes de un elemento o widget |
+| `elementor-add-element` | Añadir sección, contenedor, columna o widget |
+| `elementor-delete-element` | Eliminar un elemento (con copia de seguridad) |
+| `elementor-move-element` | Mover un elemento a otro padre/posición |
+| `elementor-duplicate-element` | Clonar un elemento con nuevos IDs |
+| `elementor-reorder-elements` | Reordenar los hijos de un padre |
+| `elementor-update-page-settings` | Fusionar ajustes de página |
+| `elementor-backup-data` / `elementor-restore-backup` | Copia de seguridad / restauración del árbol |
+| `elementor-clear-cache` | Regenerar el CSS (global o por página) |
+| `elementor-list-templates` / `elementor-get-template` | Listar / obtener plantillas de la biblioteca |
+| `elementor-create-template` | Crear plantilla (desde JSON o copiando una página) |
+| `elementor-apply-template` | Aplicar una plantilla a una página (`replace` o `append`) |
+| `elementor-get-global-settings` / `elementor-update-global-settings` | Kit global: colores y tipografías globales (Pro) |
+
 ## Desarrollo
 
 Las dependencias se gestionan con Composer y **se versionan en `vendor/`** para que el
