@@ -2,8 +2,8 @@
 /**
  * Plugin Name:       Renova MCP Control
  * Plugin URI:        https://github.com/heycarlosluis/renova
- * Description:       Servidor MCP para control total de WordPress (plugins, temas, contenido, CPT y taxonomías vía ACF, términos, meta, opciones y Elementor/Elementor Pro) vía la Abilities API + WordPress MCP Adapter.
- * Version:           1.0.0
+ * Description:       Servidor MCP para control total de WordPress (plugins, temas, contenido, CPT y taxonomías vía ACF, términos, meta, opciones, usuarios, medios, menús, comentarios, utilidades de sitio, Elementor/Elementor Pro y Rank Math SEO) vía la Abilities API + WordPress MCP Adapter.
+ * Version:           1.1.0
  * Requires at least: 6.9
  * Requires PHP:      7.4
  * Author:            renova
@@ -18,7 +18,7 @@ namespace Renova\MCP;
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'RENOVA_MCP_VERSION', '1.0.0' );
+define( 'RENOVA_MCP_VERSION', '1.1.0' );
 define( 'RENOVA_MCP_DIR', plugin_dir_path( __FILE__ ) );
 define( 'RENOVA_MCP_SERVER_ID', 'renova-mcp-server' );
 define( 'RENOVA_MCP_ROUTE_NAMESPACE', 'renova-mcp/v1' );
@@ -38,6 +38,9 @@ require_once RENOVA_MCP_DIR . 'includes/class-acf-abilities.php';
 require_once RENOVA_MCP_DIR . 'includes/class-acf-types-abilities.php';
 require_once RENOVA_MCP_DIR . 'includes/class-taxonomy-abilities.php';
 require_once RENOVA_MCP_DIR . 'includes/class-elementor-abilities.php';
+require_once RENOVA_MCP_DIR . 'includes/class-rankmath-abilities.php';
+require_once RENOVA_MCP_DIR . 'includes/class-users-media-abilities.php';
+require_once RENOVA_MCP_DIR . 'includes/class-site-abilities.php';
 
 /**
  * Inicializa el MCP Adapter. Su instancia engancha la creación de servidores
@@ -78,6 +81,15 @@ add_action( 'wp_abilities_api_init', array( Taxonomy_Abilities::class, 'register
 // Abilities de Elementor y Elementor Pro (árbol, plantillas, kit global).
 add_action( 'wp_abilities_api_init', array( Elementor_Abilities::class, 'register' ) );
 
+// Abilities de Rank Math SEO (meta SEO, schema, ajustes, redirecciones, 404).
+add_action( 'wp_abilities_api_init', array( Rankmath_Abilities::class, 'register' ) );
+
+// Abilities de usuarios y biblioteca de medios.
+add_action( 'wp_abilities_api_init', array( Users_Media_Abilities::class, 'register' ) );
+
+// Abilities de menús, comentarios y utilidades de sitio (permalinks, caché, updates).
+add_action( 'wp_abilities_api_init', array( Site_Abilities::class, 'register' ) );
+
 /**
  * Crea el servidor MCP exponiendo las abilities como herramientas (tools).
  *
@@ -91,7 +103,7 @@ add_action(
 			RENOVA_MCP_ROUTE_NAMESPACE,
 			RENOVA_MCP_ROUTE,
 			'Renova MCP Control',
-			'Control total de WordPress: plugins, temas, contenido (cualquier CPT), meta, opciones, campos ACF, registro de Custom Post Types y taxonomías vía ACF, términos, y control completo de Elementor y Elementor Pro (árbol de elementos, plantillas y kit global).',
+			'Control total de WordPress: plugins, temas, contenido (cualquier CPT), meta, opciones, campos ACF, registro de Custom Post Types y taxonomías vía ACF, términos, usuarios, biblioteca de medios, menús, comentarios, utilidades de sitio (permalinks, caché, actualizaciones), control completo de Elementor y Elementor Pro (árbol de elementos, plantillas y kit global) y de Rank Math SEO (meta SEO, schema, ajustes, redirecciones y monitor 404).',
 			RENOVA_MCP_VERSION,
 			array( \WP\MCP\Transport\HttpTransport::class ),
 			\WP\MCP\Infrastructure\ErrorHandling\ErrorLogMcpErrorHandler::class,
@@ -103,7 +115,10 @@ add_action(
 				Acf_Abilities::tool_ids(),
 				Acf_Types_Abilities::tool_ids(),
 				Taxonomy_Abilities::tool_ids(),
-				Elementor_Abilities::tool_ids()
+				Elementor_Abilities::tool_ids(),
+				Rankmath_Abilities::tool_ids(),
+				Users_Media_Abilities::tool_ids(),
+				Site_Abilities::tool_ids()
 			)
 		);
 	}

@@ -38,6 +38,31 @@ acepta **Contraseñas de aplicación** de WordPress (Basic Auth sobre HTTPS):
 | `get-post-meta` / `update-post-meta` / `delete-post-meta` | Leer / escribir / borrar metadatos de contenido |
 | `get-option` / `update-option` | Leer / escribir opciones del sitio |
 
+### Usuarios y medios
+
+| Herramienta | Acción |
+|-------------|--------|
+| `list-users` / `get-user` | Listar / obtener usuarios (filtro por rol, búsqueda) |
+| `create-user` / `update-user` / `delete-user` | Crear / editar (rol, contraseña) / eliminar usuarios |
+| `list-media` / `get-media` | Listar / obtener adjuntos de la biblioteca |
+| `upload-media` | Importar un archivo desde una URL a la biblioteca |
+| `delete-media` | Eliminar un adjunto |
+| `set-featured-image` | Fijar / quitar la imagen destacada de una entrada |
+
+### Menús, comentarios y utilidades de sitio
+
+| Herramienta | Acción |
+|-------------|--------|
+| `list-menus` / `get-menu` / `create-menu` | Gestión de menús de navegación |
+| `add-menu-item` / `delete-menu-item` / `assign-menu-location` | Elementos y ubicaciones de menú |
+| `list-comments` / `moderate-comment` / `delete-comment` | Moderar comentarios (approve/hold/spam/trash) |
+| `get-permalink-structure` / `update-permalink-structure` | Leer / cambiar la estructura de enlaces permanentes |
+| `flush-rewrite-rules` | Refrescar reglas de reescritura |
+| `get-theme-mod` / `update-theme-mod` | Ajustes del personalizador del tema |
+| `manage-transient` | Leer / fijar / borrar transients |
+| `check-updates` / `run-update` | Comprobar y ejecutar actualizaciones de plugins/temas |
+| `flush-cache` | Vaciar la caché de objetos |
+
 ### Tipos de contenido y taxonomías (nativo de WordPress)
 
 | Herramienta | Acción |
@@ -99,6 +124,21 @@ tras cada cambio. Si Elementor no está activo, cada herramienta devuelve un `WP
 | `elementor-create-template` | Crear plantilla (desde JSON o copiando una página) |
 | `elementor-apply-template` | Aplicar una plantilla a una página (`replace` o `append`) |
 | `elementor-get-global-settings` / `elementor-update-global-settings` | Kit global: colores y tipografías globales (Pro) |
+
+### Herramientas Rank Math SEO (solo si Rank Math está activo)
+
+Controlan los datos de Rank Math directamente (post-meta `rank_math_*`, opciones y tablas
+de redirecciones / monitor 404). Si Rank Math no está activo, cada herramienta devuelve un
+`WP_Error` claro.
+
+| Herramienta | Acción |
+|-------------|--------|
+| `rankmath-get-post-seo` / `rankmath-update-post-seo` | Leer / fijar título, descripción, keyword, robots, canonical, OG, Twitter |
+| `rankmath-get-post-schema` / `rankmath-set-post-schema` / `rankmath-delete-post-schema` | Marcado estructurado (Schema) por entrada |
+| `rankmath-get-settings` / `rankmath-update-settings` | Ajustes globales (general, titles, sitemap) |
+| `rankmath-list-redirections` / `rankmath-add-redirection` | Listar / crear redirecciones |
+| `rankmath-update-redirection` / `rankmath-delete-redirection` | Editar / borrar redirecciones |
+| `rankmath-get-404-log` / `rankmath-clear-404-log` | Leer / vaciar el monitor de errores 404 |
 
 ## Desarrollo
 
