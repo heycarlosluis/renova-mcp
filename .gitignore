@@ -1,0 +1,14 @@
+# Dependencias: NO se ignora vendor/ a propósito — se versiona para poder
+# desplegar por Git sin ejecutar Composer en el servidor.
+
+# Sistema operativo / editores
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+
+# Logs y temporales
+*.log
+*.tmp

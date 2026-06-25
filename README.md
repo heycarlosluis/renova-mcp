@@ -4,6 +4,20 @@ Servidor **MCP (Model Context Protocol)** para controlar este WordPress de forma
 desde cualquier cliente MCP (Claude, etc.). Construido sobre la **Abilities API** del núcleo
 de WordPress y la librería oficial [WordPress/mcp-adapter](https://github.com/WordPress/mcp-adapter).
 
+## Instalación en cualquier sitio WordPress
+
+Este plugin es **genérico y reutilizable**: funciona en cualquier WordPress, no depende de
+un dominio concreto. Para instalarlo en un sitio nuevo:
+
+1. Copia la carpeta `renova-mcp` a `wp-content/plugins/` (por SFTP, ZIP o Git). El directorio
+   `vendor/` viaja en el repo, así que **no necesitas ejecutar Composer en el servidor**.
+2. Actívalo en *Plugins*.
+3. Crea una **Contraseña de aplicación** para un usuario administrador (ver Autenticación).
+4. Configura tu cliente MCP con la URL del endpoint y esas credenciales.
+
+Las herramientas de ACF, Elementor y Rank Math se activan solas **solo si** ese plugin está
+presente; si no, devuelven un `WP_Error` claro sin romper nada.
+
 ## Endpoint
 
 Una vez activado el plugin, el servidor MCP queda disponible en:
