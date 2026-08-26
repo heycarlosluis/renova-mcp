@@ -3,7 +3,7 @@
  * Plugin Name:       Renova MCP Control
  * Plugin URI:        https://github.com/heycarlosluis/renova-mcp
  * Description:       Servidor MCP para control total de WordPress (plugins, temas, contenido, CPT y taxonomías vía ACF, términos, meta, opciones, usuarios, medios, menús, comentarios, utilidades de sitio, Elementor/Elementor Pro y Rank Math SEO) vía la Abilities API + WordPress MCP Adapter.
- * Version:           1.3.0
+ * Version:           1.3.1
  * Requires at least: 6.9
  * Requires PHP:      7.4
  * Tested up to:      7.1
@@ -20,8 +20,9 @@ namespace Renova\MCP;
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'RENOVA_MCP_VERSION', '1.3.0' );
+define( 'RENOVA_MCP_VERSION', '1.3.1' );
 define( 'RENOVA_MCP_DIR', plugin_dir_path( __FILE__ ) );
+define( 'RENOVA_MCP_URL', plugin_dir_url( __FILE__ ) );
 define( 'RENOVA_MCP_SERVER_ID', 'renova-mcp-server' );
 define( 'RENOVA_MCP_ROUTE_NAMESPACE', 'renova-mcp/v1' );
 define( 'RENOVA_MCP_ROUTE', 'mcp' );

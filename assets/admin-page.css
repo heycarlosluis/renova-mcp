@@ -1,277 +1,671 @@
 /*
- * Estilos de la página "Renova MCP" (guía de configuración).
+ * Interfaz de conexión de Renova MCP.
+ * Sistema de forma: paneles 16px, superficies internas 12px y controles 10px.
  */
 
 .renova-mcp-wrap {
-	max-width: 1080px;
-	margin: 20px 20px 0 0;
-	color: #1a202c;
+	--renova-neutral-0: #ffffff;
+	--renova-neutral-25: #fafbfc;
+	--renova-neutral-50: #f4f6f8;
+	--renova-neutral-100: #e9edf2;
+	--renova-neutral-200: #d8dee7;
+	--renova-neutral-400: #8792a2;
+	--renova-neutral-600: #4b5565;
+	--renova-neutral-700: #354052;
+	--renova-neutral-900: #151a23;
+	--renova-accent-50: #eef3ff;
+	--renova-accent-100: #dfe8ff;
+	--renova-accent-300: #8ca6f4;
+	--renova-accent-500: #3157d5;
+	--renova-accent-600: #2747b5;
+	--renova-accent-900: #16255d;
+	--renova-success-50: #eaf8ef;
+	--renova-success-700: #167142;
+	--renova-color-bg-page: var(--renova-neutral-50);
+	--renova-color-bg-surface: var(--renova-neutral-0);
+	--renova-color-bg-sunken: var(--renova-neutral-25);
+	--renova-color-text-primary: var(--renova-neutral-900);
+	--renova-color-text-secondary: var(--renova-neutral-600);
+	--renova-color-border: var(--renova-neutral-200);
+	--renova-color-border-subtle: var(--renova-neutral-100);
+	--renova-color-focus: var(--renova-accent-500);
+	--renova-color-accent-solid: var(--renova-accent-500);
+	--renova-color-accent-solid-hover: var(--renova-accent-600);
+	--renova-color-on-accent: #ffffff;
+	--renova-shadow-panel:
+		0 0 0 1px rgb(20 31 51 / 0.05),
+		0 1px 2px rgb(20 31 51 / 0.04),
+		0 10px 30px rgb(20 31 51 / 0.035);
+
+	box-sizing: border-box;
+	max-width: none;
+	margin: 0 0 0 -20px;
+	padding: 0;
+	background: var(--renova-color-bg-page);
+	color: var(--renova-color-text-primary);
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.renova-mcp-wrap *,
+.renova-mcp-wrap *::before,
+.renova-mcp-wrap *::after {
+	box-sizing: border-box;
+}
+
+.renova-mcp-wrap .lucide {
+	width: 18px;
+	height: 18px;
+	stroke-width: 1.8;
+}
+
+.renova-mcp-shell {
+	width: min(100%, 1440px);
+	margin-inline: auto;
+	padding: 40px clamp(24px, 3vw, 52px) 64px;
 }
 
 .renova-mcp-header {
 	display: flex;
 	align-items: flex-start;
 	justify-content: space-between;
-	gap: 16px;
-	margin-bottom: 20px;
+	gap: 24px;
+	margin-block-end: 28px;
 }
 
-.renova-mcp-title {
-	margin: 0 0 4px;
-	font-size: 24px;
-	line-height: 1.2;
-	font-weight: 700;
-	color: #1a202c;
-}
-
-.renova-mcp-lead {
-	margin: 0;
-	color: #64748b;
-	font-size: 14px;
-	max-width: 640px;
-}
-
-.renova-mcp-badge {
-	display: inline-flex;
-	align-items: center;
-	padding: 4px 12px;
-	border-radius: 999px;
-	background: #eef2ff;
-	color: #4f46e5;
-	font-size: 12px;
-	font-weight: 600;
-	white-space: nowrap;
-}
-
-.renova-mcp-card {
-	background: #fff;
-	border: 1px solid #e2e8f0;
-	border-radius: 16px;
-	padding: 20px;
-	box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
-}
-
-.renova-mcp-card-title {
+.renova-mcp-brand {
 	display: flex;
-	align-items: center;
-	gap: 10px;
-	margin: 0 0 12px;
-	font-size: 16px;
-	font-weight: 700;
-	color: #1a202c;
+	align-items: flex-start;
+	gap: 18px;
 }
 
-.renova-mcp-step {
+.renova-mcp-brand-mark,
+.renova-mcp-endpoint-icon,
+.renova-mcp-panel-icon,
+.renova-mcp-security-icon {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 24px;
-	height: 24px;
-	border-radius: 8px;
-	background: #4f46e5;
-	color: #fff;
-	font-size: 13px;
-	font-weight: 700;
 	flex: none;
+	color: var(--renova-color-on-accent);
+	background: var(--renova-color-accent-solid);
 }
 
-.renova-mcp-overline {
-	display: block;
-	font-size: 11px;
-	font-weight: 600;
-	letter-spacing: 0.06em;
+.renova-mcp-brand-mark {
+	width: 48px;
+	height: 48px;
+	border-radius: 14px;
+	box-shadow: 0 8px 18px rgb(49 87 213 / 0.18);
+}
+
+.renova-mcp-brand-mark .lucide {
+	width: 26px;
+	height: 26px;
+	stroke-width: 1.7;
+}
+
+.renova-mcp-kicker {
+	margin: 1px 0 5px;
+	color: var(--renova-color-accent-solid);
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.075em;
+	line-height: 1.3;
 	text-transform: uppercase;
-	color: #6b7280;
-	margin-bottom: 8px;
 }
 
-.renova-mcp-pill {
+.renova-mcp-title {
+	margin: 0;
+	color: var(--renova-color-text-primary);
+	font-size: clamp(30px, 3vw, 43px);
+	font-weight: 720;
+	letter-spacing: -0.035em;
+	line-height: 1.08;
+	text-wrap: balance;
+}
+
+.renova-mcp-lead {
+	max-width: 680px;
+	margin: 9px 0 0;
+	color: var(--renova-color-text-secondary);
+	font-size: 15px;
+	line-height: 1.55;
+	text-wrap: pretty;
+}
+
+.renova-mcp-version,
+.renova-mcp-client-count {
 	display: inline-flex;
 	align-items: center;
-	padding: 3px 10px;
+	min-height: 30px;
+	padding-inline: 11px;
+	border: 1px solid var(--renova-color-border);
 	border-radius: 999px;
-	background: #ecfdf5;
-	color: #047857;
+	background: var(--renova-color-bg-surface);
+	color: var(--renova-color-text-secondary);
 	font-size: 12px;
-	font-weight: 600;
+	font-weight: 650;
+	line-height: 1;
+	white-space: nowrap;
 }
 
 .renova-mcp-endpoint {
-	margin-bottom: 20px;
+	position: relative;
+	display: grid;
+	grid-template-columns: minmax(220px, 0.55fr) minmax(360px, 1.45fr);
+	gap: 22px 32px;
+	align-items: center;
+	margin-block-end: 24px;
+	padding: 24px;
+	overflow: hidden;
+	border-radius: 16px;
+	background:
+		radial-gradient(circle at 100% 0%, rgb(49 87 213 / 0.08), transparent 36%),
+		var(--renova-color-bg-surface);
+	box-shadow: var(--renova-shadow-panel);
 }
 
-.renova-mcp-endpoint-head {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 12px;
-	margin-bottom: 8px;
+.renova-mcp-endpoint::before {
+	position: absolute;
+	inset-block: 0;
+	inset-inline-start: 0;
+	width: 4px;
+	background: var(--renova-color-accent-solid);
+	content: "";
 }
 
-.renova-mcp-endpoint-row {
+.renova-mcp-endpoint-intro {
 	display: flex;
 	align-items: center;
+	gap: 14px;
+}
+
+.renova-mcp-endpoint-icon {
+	width: 42px;
+	height: 42px;
+	border-radius: 12px;
+	background: var(--renova-accent-50);
+	color: var(--renova-color-accent-solid);
+}
+
+.renova-mcp-endpoint h2,
+.renova-mcp-panel h2,
+.renova-mcp-security h2 {
+	margin: 0;
+	color: var(--renova-color-text-primary);
+	font-size: 17px;
+	font-weight: 700;
+	letter-spacing: -0.015em;
+	line-height: 1.25;
+}
+
+.renova-mcp-endpoint-intro p,
+.renova-mcp-panel-heading p,
+.renova-mcp-clients-heading p,
+.renova-mcp-security-heading p {
+	margin: 5px 0 0;
+	color: var(--renova-color-text-secondary);
+	font-size: 13px;
+	line-height: 1.45;
+	text-wrap: pretty;
+}
+
+.renova-mcp-endpoint-main {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
 	gap: 12px;
-	flex-wrap: wrap;
+	align-items: center;
 }
 
 .renova-mcp-endpoint-url {
-	flex: 1;
-	min-width: 0;
 	display: block;
+	min-width: 0;
+	padding: 15px 16px;
 	overflow-x: auto;
+	border: 1px solid var(--renova-accent-100);
+	border-radius: 10px;
+	background: var(--renova-accent-50);
+	color: var(--renova-accent-600);
+	font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+	font-size: 13px;
+	font-weight: 550;
+	line-height: 1.4;
 	white-space: nowrap;
-	padding: 14px 16px;
-	border-radius: 12px;
-	background: #f8fafc;
-	border: 1px solid #e2e8f0;
-	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-	font-size: 13px;
-	color: #4f46e5;
+	scrollbar-width: thin;
 }
 
-.renova-mcp-hint {
-	margin: 10px 0 0;
-	color: #64748b;
-	font-size: 13px;
-	line-height: 1.5;
+.renova-mcp-endpoint-meta {
+	display: flex;
+	grid-column: 2;
+	gap: 18px;
+	align-items: center;
+	color: var(--renova-color-text-secondary);
+	font-size: 12px;
 }
 
-.renova-mcp-grid {
+.renova-mcp-status {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	color: var(--renova-success-700);
+	font-weight: 650;
+}
+
+.renova-mcp-status .lucide {
+	width: 16px;
+	height: 16px;
+}
+
+.renova-mcp-workspace {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 20px;
+	grid-template-columns: minmax(340px, 0.72fr) minmax(620px, 1.48fr);
+	gap: 24px;
 	align-items: start;
 }
 
-@media (max-width: 900px) {
-	.renova-mcp-grid {
-		grid-template-columns: 1fr;
-	}
-}
-
-.renova-mcp-col {
+.renova-mcp-setup {
 	display: flex;
 	flex-direction: column;
-	gap: 20px;
+	gap: 24px;
 }
 
-.renova-mcp-steps {
-	margin: 0;
-	padding-left: 20px;
-	color: #334155;
-	font-size: 14px;
-	line-height: 1.6;
+.renova-mcp-panel {
+	padding: 24px;
+	border-radius: 16px;
+	background: var(--renova-color-bg-surface);
+	box-shadow: var(--renova-shadow-panel);
 }
 
-.renova-mcp-steps li + li {
-	margin-top: 6px;
+.renova-mcp-panel-heading,
+.renova-mcp-security-heading {
+	display: flex;
+	align-items: flex-start;
+	gap: 13px;
+	margin-block-end: 22px;
+}
+
+.renova-mcp-panel-icon,
+.renova-mcp-security-icon {
+	width: 36px;
+	height: 36px;
+	border-radius: 10px;
+	background: var(--renova-accent-50);
+	color: var(--renova-color-accent-solid);
+}
+
+.renova-mcp-panel-icon .lucide,
+.renova-mcp-security-icon .lucide {
+	width: 18px;
+	height: 18px;
+}
+
+.renova-mcp-instruction {
+	display: grid;
+	grid-template-columns: 28px minmax(0, 1fr);
+	gap: 12px;
+	align-items: start;
+}
+
+.renova-mcp-instruction + .renova-mcp-instruction {
+	margin-block-start: 14px;
+}
+
+.renova-mcp-instruction-number {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	border-radius: 9px;
+	background: var(--renova-accent-50);
+	color: var(--renova-color-accent-solid);
+	font-size: 12px;
+	font-weight: 750;
+	font-variant-numeric: tabular-nums;
+}
+
+.renova-mcp-instruction p {
+	margin: 3px 0 0;
+	color: var(--renova-color-text-secondary);
+	font-size: 13px;
+	line-height: 1.5;
+	text-wrap: pretty;
+}
+
+.renova-mcp-button,
+.renova-mcp-icon-button,
+.renova-mcp-visibility {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border: 0;
+	font-family: inherit;
+	font-weight: 650;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.renova-mcp-button {
+	min-height: 42px;
+	gap: 8px;
+	padding: 0 15px 0 16px;
+	border-radius: 10px;
+	font-size: 13px;
+	line-height: 1;
+	white-space: nowrap;
+}
+
+.renova-mcp-button .lucide {
+	width: 17px;
+	height: 17px;
+}
+
+.renova-mcp-button-primary {
+	background: var(--renova-color-accent-solid);
+	box-shadow: 0 1px 2px rgb(22 37 93 / 0.2);
+	color: var(--renova-color-on-accent);
+}
+
+.renova-mcp-button-secondary {
+	width: 100%;
+	margin-block-start: 22px;
+	border: 1px solid var(--renova-color-border);
+	background: var(--renova-color-bg-surface);
+	color: var(--renova-color-text-primary);
+}
+
+.renova-mcp-button-secondary .lucide-external-link {
+	margin-inline-start: auto;
+	color: var(--renova-color-text-secondary);
 }
 
 .renova-mcp-form {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 12px;
-}
-
-@media (max-width: 640px) {
-	.renova-mcp-form {
-		grid-template-columns: 1fr;
-	}
+	gap: 16px;
 }
 
 .renova-mcp-field {
 	display: flex;
 	flex-direction: column;
-	gap: 6px;
+	gap: 7px;
 }
 
-.renova-mcp-field span {
+.renova-mcp-field > span:first-child {
+	color: var(--renova-color-text-primary);
 	font-size: 12px;
-	font-weight: 600;
-	color: #475569;
+	font-weight: 650;
+	line-height: 1.35;
 }
 
 .renova-mcp-field input {
 	width: 100%;
-	box-sizing: border-box;
+	min-height: 43px;
+	margin: 0;
 	padding: 9px 12px;
+	border: 1px solid var(--renova-color-border);
 	border-radius: 10px;
-	border: 1px solid #cbd5e1;
+	background: var(--renova-color-bg-sunken);
+	box-shadow: inset 0 1px 1px rgb(20 31 51 / 0.025);
+	color: var(--renova-color-text-primary);
+	font-family: inherit;
 	font-size: 14px;
-	color: #1a202c;
+	line-height: 1.45;
 }
 
-.renova-mcp-field input:focus {
-	border-color: #4f46e5;
-	box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
-	outline: none;
+.renova-mcp-field input::placeholder {
+	color: #697586;
+	opacity: 1;
 }
 
-.renova-mcp-auth-row {
-	display: flex;
+.renova-mcp-password-control {
+	position: relative;
+	display: block;
+}
+
+.renova-mcp-password-control input {
+	padding-inline-end: 48px;
+}
+
+.renova-mcp-visibility {
+	position: absolute;
+	inset-block: 2px;
+	inset-inline-end: 2px;
+	width: 40px;
+	min-height: 39px;
+	border-radius: 8px;
+	background: transparent;
+	color: var(--renova-color-text-secondary);
+}
+
+.renova-mcp-output {
+	margin-block-start: 18px;
+	padding: 13px;
+	border-radius: 12px;
+	background: var(--renova-accent-50);
+}
+
+.renova-mcp-output-label {
+	display: block;
+	margin-block-end: 6px;
+	color: var(--renova-color-accent-solid);
+	font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.05em;
+	line-height: 1.3;
+	text-transform: uppercase;
+}
+
+.renova-mcp-output-row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 40px;
+	gap: 8px;
 	align-items: center;
-	gap: 12px;
-	margin-top: 12px;
 }
 
 .renova-mcp-auth {
-	flex: 1;
+	display: block;
 	min-width: 0;
 	overflow-x: auto;
+	color: var(--renova-accent-900);
+	font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+	font-size: 12px;
+	line-height: 1.45;
 	white-space: nowrap;
-	padding: 10px 14px;
+	scrollbar-width: thin;
+}
+
+.renova-mcp-icon-button {
+	width: 40px;
+	height: 40px;
 	border-radius: 10px;
-	background: #f8fafc;
-	border: 1px solid #e2e8f0;
-	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-	font-size: 13px;
-	color: #334155;
+	background: var(--renova-color-bg-surface);
+	box-shadow: 0 0 0 1px rgb(20 31 51 / 0.08);
+	color: var(--renova-color-accent-solid);
 }
 
-.renova-mcp-client {
-	border: 1px solid #eef2f7;
+.renova-mcp-clients {
+	min-width: 0;
+}
+
+.renova-mcp-clients-heading {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 18px;
+	margin-block-end: 22px;
+}
+
+.renova-mcp-client-layout {
+	display: grid;
+	grid-template-columns: minmax(200px, 0.72fr) minmax(340px, 1.45fr);
+	gap: 20px;
+	align-items: stretch;
+}
+
+.renova-mcp-client-tabs {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.renova-mcp-client-tab {
+	display: grid;
+	grid-template-columns: 38px minmax(0, 1fr) 18px;
+	gap: 11px;
+	align-items: center;
+	width: 100%;
+	min-height: 68px;
+	margin: 0;
+	padding: 10px 11px;
+	border: 1px solid transparent;
 	border-radius: 12px;
-	padding: 14px;
-	background: #fbfcfe;
+	background: transparent;
+	color: var(--renova-color-text-primary);
+	font-family: inherit;
+	text-align: start;
+	cursor: pointer;
 }
 
-.renova-mcp-client + .renova-mcp-client {
-	margin-top: 12px;
+.renova-mcp-client-tab.is-active {
+	border-color: var(--renova-accent-100);
+	background: var(--renova-accent-50);
+	box-shadow: inset 3px 0 0 var(--renova-color-accent-solid);
 }
 
-.renova-mcp-client-head {
+.renova-mcp-client-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 38px;
+	height: 38px;
+	border-radius: 10px;
+	background: var(--renova-color-bg-surface);
+	box-shadow: 0 0 0 1px rgb(20 31 51 / 0.08);
+	color: var(--renova-color-text-secondary);
+}
+
+.renova-mcp-client-tab.is-active .renova-mcp-client-icon {
+	color: var(--renova-color-accent-solid);
+}
+
+.renova-mcp-client-copy {
+	display: block;
+	min-width: 0;
+}
+
+.renova-mcp-client-copy strong,
+.renova-mcp-client-copy small {
+	display: block;
+	overflow-wrap: break-word;
+}
+
+.renova-mcp-client-copy strong {
+	font-size: 13px;
+	font-weight: 680;
+	line-height: 1.3;
+}
+
+.renova-mcp-client-copy small {
+	margin-block-start: 3px;
+	color: var(--renova-color-text-secondary);
+	font-size: 11px;
+	font-weight: 400;
+	line-height: 1.35;
+}
+
+.renova-mcp-client-tab > .lucide {
+	width: 17px;
+	height: 17px;
+	color: var(--renova-neutral-400);
+}
+
+.renova-mcp-code-area {
+	min-width: 0;
+}
+
+.renova-mcp-code-panel {
+	height: 100%;
+	min-height: 370px;
+	overflow: hidden;
+	border-radius: 12px;
+	background: #111827;
+	box-shadow:
+		0 0 0 1px rgb(17 24 39 / 0.08),
+		0 12px 28px rgb(17 24 39 / 0.12);
+}
+
+.renova-mcp-code-panel[hidden] {
+	display: none;
+}
+
+.renova-mcp-code-toolbar {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: 12px;
-	margin-bottom: 10px;
+	gap: 14px;
+	min-height: 66px;
+	padding: 12px 14px;
+	border-block-end: 1px solid rgb(255 255 255 / 0.09);
+	background: #1a2332;
 }
 
-.renova-mcp-client-name {
-	display: block;
-	font-size: 14px;
-	font-weight: 600;
-	color: #1a202c;
+.renova-mcp-code-toolbar > div {
+	display: flex;
+	min-width: 0;
+	gap: 9px;
+	align-items: center;
 }
 
-.renova-mcp-client-sub {
-	display: block;
-	font-size: 12px;
-	color: #94a3b8;
-	margin-top: 2px;
+.renova-mcp-code-format {
+	display: inline-flex;
+	align-items: center;
+	min-height: 24px;
+	padding-inline: 8px;
+	border-radius: 7px;
+	background: rgb(140 166 244 / 0.15);
+	color: #b8c8ff;
+	font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	line-height: 1;
+}
+
+.renova-mcp-code-toolbar strong {
+	min-width: 0;
+	overflow: hidden;
+	color: #dbe4f2;
+	font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+	font-size: 11px;
+	font-weight: 500;
+	line-height: 1.35;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.renova-mcp-button-code {
+	min-height: 38px;
+	padding-inline: 12px 11px;
+	background: #f7f9fc;
+	box-shadow: 0 1px 2px rgb(0 0 0 / 0.2);
+	color: #1b2638;
+	font-size: 11px;
 }
 
 .renova-mcp-pre {
+	min-height: 245px;
+	max-height: 400px;
 	margin: 0;
-	padding: 12px 14px;
-	border-radius: 10px;
-	background: #0f172a;
-	color: #e2e8f0;
-	overflow-x: auto;
-	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	padding: 24px 22px;
+	overflow: auto;
+	background: #111827;
+	color: #dbe4f2;
+	font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
 	font-size: 12px;
-	line-height: 1.55;
+	line-height: 1.65;
+	tab-size: 2;
 }
 
 .renova-mcp-snippet {
@@ -281,23 +675,277 @@
 	white-space: pre;
 }
 
-.renova-mcp-copy {
-	white-space: nowrap;
-	flex: none;
-}
-
-.renova-mcp-security .renova-mcp-card-title {
-	margin-bottom: 8px;
-}
-
-.renova-mcp-bullets {
+.renova-mcp-code-note {
+	display: flex;
+	gap: 8px;
+	align-items: flex-start;
 	margin: 0;
-	padding-left: 20px;
-	color: #475569;
-	font-size: 13px;
-	line-height: 1.6;
+	padding: 13px 16px;
+	border-block-start: 1px solid rgb(255 255 255 / 0.09);
+	background: #182131;
+	color: #aebbd0;
+	font-size: 11px;
+	line-height: 1.45;
 }
 
-.renova-mcp-bullets li + li {
-	margin-top: 4px;
+.renova-mcp-code-note .lucide {
+	flex: none;
+	width: 16px;
+	height: 16px;
+	margin-block-start: 1px;
+}
+
+.renova-mcp-security {
+	display: grid;
+	grid-template-columns: minmax(230px, 0.7fr) minmax(0, 1.6fr);
+	gap: 28px;
+	align-items: center;
+	margin-block-start: 24px;
+	padding: 22px 24px;
+	border-radius: 16px;
+	background: var(--renova-color-bg-surface);
+	box-shadow: var(--renova-shadow-panel);
+}
+
+.renova-mcp-security-heading {
+	margin: 0;
+}
+
+.renova-mcp-security-list {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 18px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.renova-mcp-security-list li {
+	padding-inline-start: 14px;
+	border-inline-start: 2px solid var(--renova-accent-100);
+}
+
+.renova-mcp-security-list strong,
+.renova-mcp-security-list span {
+	display: block;
+}
+
+.renova-mcp-security-list strong {
+	color: var(--renova-color-text-primary);
+	font-size: 12px;
+	font-weight: 700;
+	line-height: 1.35;
+}
+
+.renova-mcp-security-list span {
+	margin-block-start: 4px;
+	color: var(--renova-color-text-secondary);
+	font-size: 11px;
+	line-height: 1.45;
+	text-wrap: pretty;
+}
+
+.renova-mcp-copy.is-copied {
+	background: var(--renova-success-700);
+	color: var(--renova-color-on-accent);
+}
+
+.renova-mcp-copy.has-error {
+	background: #a72f37;
+	color: var(--renova-color-on-accent);
+}
+
+.renova-mcp-button:focus-visible,
+.renova-mcp-icon-button:focus-visible,
+.renova-mcp-visibility:focus-visible,
+.renova-mcp-client-tab:focus-visible,
+.renova-mcp-pre:focus-visible,
+.renova-mcp-field input:focus-visible {
+	outline: 2px solid var(--renova-color-focus);
+	outline-offset: 2px;
+}
+
+.renova-mcp-field input:focus-visible {
+	border-color: var(--renova-color-focus);
+	box-shadow: 0 0 0 3px rgb(49 87 213 / 0.13);
+}
+
+.renova-mcp-sr-only {
+	position: absolute !important;
+	width: 1px !important;
+	height: 1px !important;
+	margin: -1px !important;
+	padding: 0 !important;
+	overflow: hidden !important;
+	clip: rect(0, 0, 0, 0) !important;
+	border: 0 !important;
+	white-space: nowrap !important;
+}
+
+@media (hover: hover) {
+	.renova-mcp-button-primary:hover {
+		background: var(--renova-color-accent-solid-hover);
+		color: var(--renova-color-on-accent);
+	}
+
+	.renova-mcp-button-secondary:hover,
+	.renova-mcp-icon-button:hover,
+	.renova-mcp-visibility:hover {
+		border-color: var(--renova-accent-300);
+		background: var(--renova-accent-50);
+		color: var(--renova-color-accent-solid);
+	}
+
+	.renova-mcp-client-tab:hover:not(.is-active) {
+		background: var(--renova-neutral-50);
+	}
+
+	.renova-mcp-button-code:hover {
+		background: var(--renova-accent-100);
+		color: var(--renova-accent-900);
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.renova-mcp-button,
+	.renova-mcp-icon-button,
+	.renova-mcp-visibility,
+	.renova-mcp-client-tab {
+		transition-property: background-color, border-color, box-shadow, color, transform;
+		transition-duration: 150ms;
+		transition-timing-function: ease-out;
+	}
+
+	.renova-mcp-button:active,
+	.renova-mcp-icon-button:active,
+	.renova-mcp-visibility:active,
+	.renova-mcp-client-tab:active {
+		transform: scale(0.96);
+	}
+}
+
+@media (max-width: 1180px) {
+	.renova-mcp-endpoint {
+		grid-template-columns: 1fr;
+	}
+
+	.renova-mcp-endpoint-meta {
+		grid-column: 1;
+	}
+
+	.renova-mcp-workspace {
+		grid-template-columns: minmax(300px, 0.64fr) minmax(520px, 1.36fr);
+	}
+
+	.renova-mcp-client-layout {
+		grid-template-columns: 1fr;
+	}
+
+	.renova-mcp-client-tabs {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.renova-mcp-client-tab {
+		min-height: 62px;
+	}
+}
+
+@media (max-width: 900px) {
+	.renova-mcp-shell {
+		padding-inline: 24px;
+	}
+
+	.renova-mcp-workspace,
+	.renova-mcp-security {
+		grid-template-columns: 1fr;
+	}
+
+	.renova-mcp-setup {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 680px) {
+	.renova-mcp-wrap {
+		margin-inline-start: -10px;
+	}
+
+	.renova-mcp-shell {
+		padding: 28px 16px 48px;
+	}
+
+	.renova-mcp-header,
+	.renova-mcp-brand,
+	.renova-mcp-endpoint-main,
+	.renova-mcp-setup,
+	.renova-mcp-clients-heading,
+	.renova-mcp-code-toolbar,
+	.renova-mcp-security-list {
+		grid-template-columns: 1fr;
+	}
+
+	.renova-mcp-header,
+	.renova-mcp-clients-heading,
+	.renova-mcp-code-toolbar {
+		align-items: stretch;
+	}
+
+	.renova-mcp-brand {
+		display: grid;
+	}
+
+	.renova-mcp-version,
+	.renova-mcp-client-count {
+		justify-self: start;
+	}
+
+	.renova-mcp-endpoint,
+	.renova-mcp-panel,
+	.renova-mcp-security {
+		padding: 20px;
+	}
+
+	.renova-mcp-button-primary,
+	.renova-mcp-button-code {
+		width: 100%;
+	}
+
+	.renova-mcp-client-tabs {
+		grid-template-columns: 1fr;
+	}
+
+	.renova-mcp-code-toolbar {
+		display: grid;
+	}
+
+	.renova-mcp-pre {
+		min-height: 220px;
+		padding: 20px 16px;
+		font-size: 11px;
+	}
+
+	.renova-mcp-security-list {
+		display: grid;
+	}
+
+	.renova-mcp-field input {
+		font-size: 16px;
+	}
+}
+
+@media (forced-colors: active) {
+	.renova-mcp-button,
+	.renova-mcp-icon-button,
+	.renova-mcp-visibility,
+	.renova-mcp-client-tab,
+	.renova-mcp-field input,
+	.renova-mcp-endpoint-url {
+		border: 1px solid ButtonText;
+	}
+
+	.renova-mcp-client-tab.is-active {
+		border: 2px solid Highlight;
+	}
 }

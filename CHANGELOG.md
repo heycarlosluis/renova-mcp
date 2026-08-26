@@ -2,6 +2,18 @@
 
 Todas las versiones notables de **Renova MCP Control**.
 
+## 1.3.1
+
+- **Guía de conexión rediseñada**: nueva composición visual inspirada en herramientas
+  para desarrolladores, con endpoint destacado, selector de clientes y panel de código.
+- **Mejor accesibilidad**: navegación de clientes con teclado, estados de copia anunciados,
+  foco visible, controles táctiles más amplios y mejor adaptación móvil.
+- **Iconografía consistente**: Lucide se incluye localmente con un paquete reducido de iconos.
+- **Carga de assets corregida**: los estilos y scripts administrativos usan la URL pública
+  del plugin en vez de la ruta interna del servidor.
+- **Flujo más claro**: acceso directo a las contraseñas de aplicación, usuario actual
+  precargado y credencial generada solo cuando ambos campos están completos.
+
 ## 1.3.0
 
 - **Página de administración**: nueva entrada "Renova MCP" en el menú con una guía
