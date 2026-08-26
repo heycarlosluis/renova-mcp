@@ -710,7 +710,7 @@ class Rankmath_Abilities {
 		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) !== $table ) {
 			return new \WP_Error( 'renova_mcp_no_redirections', 'El módulo de Redirecciones de Rank Math no está activo.' );
 		}
-		$number = isset( $input['number'] ) ? (int) $input['number'] : 100;
+		$number = isset( $input['number'] ) ? min( (int) $input['number'], 500 ) : 100;
 		// phpcs:ignore WordPress.DB
 		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table} ORDER BY id DESC LIMIT %d", $number ), ARRAY_A );
 
@@ -889,7 +889,7 @@ class Rankmath_Abilities {
 		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) !== $table ) {
 			return new \WP_Error( 'renova_mcp_no_404', 'El monitor 404 de Rank Math no está activo.' );
 		}
-		$number = isset( $input['number'] ) ? (int) $input['number'] : 100;
+		$number = isset( $input['number'] ) ? min( (int) $input['number'], 500 ) : 100;
 		// phpcs:ignore WordPress.DB
 		$rows = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table} ORDER BY id DESC LIMIT %d", $number ), ARRAY_A );
 		return array(

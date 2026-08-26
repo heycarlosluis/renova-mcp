@@ -4,6 +4,12 @@ Servidor **MCP (Model Context Protocol)** para controlar este WordPress de forma
 desde cualquier cliente MCP (Claude, etc.). Construido sobre la **Abilities API** del núcleo
 de WordPress y la librería oficial [WordPress/mcp-adapter](https://github.com/WordPress/mcp-adapter).
 
+## Requisitos
+
+- WordPress **6.9+** (la Abilities API está integrada en el núcleo desde 6.9). Probado hasta 7.1.
+- PHP **7.4+**.
+- `wordpress/mcp-adapter` `^0.6` (viaja versionado en `vendor/`, no requiere Composer en el servidor).
+
 ## Instalación en cualquier sitio WordPress
 
 Este plugin es **genérico y reutilizable**: funciona en cualquier WordPress, no depende de
@@ -25,6 +31,10 @@ Una vez activado el plugin, el servidor MCP queda disponible en:
 ```
 https://TU-DOMINIO/wp-json/renova-mcp/v1/mcp
 ```
+
+> El servidor por defecto del adaptador (`/wp-json/mcp/mcp-adapter-default-server`) se
+> desactiva automáticamente: expondría abilities `discover`/`execute` sobre cualquier
+> ability registrada. Solo queda expuesto el endpoint controlado de Renova.
 
 ## Autenticación
 
@@ -168,3 +178,10 @@ composer install   # dentro de wp-content/plugins/renova-mcp
 Este plugin otorga control administrativo total del sitio a quien tenga credenciales válidas.
 Usa siempre HTTPS, limita las contraseñas de aplicación a usuarios de confianza y revócalas
 cuando dejes de usarlas.
+
+Medidas de seguridad integradas:
+
+- El servidor por defecto del adaptador MCP queda desactivado (solo se expone el endpoint de Renova).
+- `delete-user` impide eliminar tu propio usuario o al último administrador del sitio.
+- Los listados tienen un límite máximo de resultados para evitar consultas excesivas.
+- Todos los endpoints exigen `manage_options` (administrador).

@@ -865,26 +865,30 @@ class Elementor_Abilities {
 	 * @return array
 	 */
 	public static function list_content( $input ) {
-		$posts = get_posts(
-			array(
-				'post_type'      => isset( $input['post_type'] ) ? sanitize_key( $input['post_type'] ) : 'page',
-				'post_status'    => 'any',
-				'posts_per_page' => isset( $input['number'] ) ? (int) $input['number'] : 50,
-			)
+		$args = array(
+			'post_type'      => isset( $input['post_type'] ) ? sanitize_key( $input['post_type'] ) : 'page',
+			'post_status'    => 'any',
+			'posts_per_page' => isset( $input['number'] ) ? min( (int) $input['number'], 100 ) : 50,
 		);
-		$only  = ! empty( $input['only_elementor'] );
+		$only = ! empty( $input['only_elementor'] );
+		if ( $only ) {
+			$args['meta_query'] = array(
+				array(
+					'key'   => '_elementor_edit_mode',
+					'value' => 'builder',
+				),
+			);
+		}
+
+		$posts = get_posts( $args );
 		$items = array();
 		foreach ( $posts as $post ) {
-			$is_elementor = 'builder' === get_post_meta( $post->ID, '_elementor_edit_mode', true );
-			if ( $only && ! $is_elementor ) {
-				continue;
-			}
 			$items[] = array(
 				'id'           => $post->ID,
 				'title'        => get_the_title( $post ),
 				'type'         => $post->post_type,
 				'status'       => $post->post_status,
-				'is_elementor' => $is_elementor,
+				'is_elementor' => $only || 'builder' === get_post_meta( $post->ID, '_elementor_edit_mode', true ),
 				'url'          => get_permalink( $post ),
 			);
 		}

@@ -1,11 +1,12 @@
 <?php
 /**
  * Plugin Name:       Renova MCP Control
- * Plugin URI:        https://github.com/heycarlosluis/renova
+ * Plugin URI:        https://github.com/heycarlosluis/renova-mcp
  * Description:       Servidor MCP para control total de WordPress (plugins, temas, contenido, CPT y taxonomías vía ACF, términos, meta, opciones, usuarios, medios, menús, comentarios, utilidades de sitio, Elementor/Elementor Pro y Rank Math SEO) vía la Abilities API + WordPress MCP Adapter.
- * Version:           1.1.0
+ * Version:           1.2.0
  * Requires at least: 6.9
  * Requires PHP:      7.4
+ * Tested up to:      7.1
  * Author:            renova
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -18,7 +19,7 @@ namespace Renova\MCP;
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'RENOVA_MCP_VERSION', '1.1.0' );
+define( 'RENOVA_MCP_VERSION', '1.2.0' );
 define( 'RENOVA_MCP_DIR', plugin_dir_path( __FILE__ ) );
 define( 'RENOVA_MCP_SERVER_ID', 'renova-mcp-server' );
 define( 'RENOVA_MCP_ROUTE_NAMESPACE', 'renova-mcp/v1' );
@@ -64,6 +65,12 @@ add_action(
 		\WP\MCP\Core\McpAdapter::instance();
 	}
 );
+
+// Desactiva el servidor MCP por defecto del adaptador. Expone las abilities
+// `discover`/`execute`/`get-ability-info` en /wp-json/mcp/mcp-adapter-default-server,
+// lo que permitiría ejecutar cualquier ability registrada. Solo queremos exponer
+// nuestro servidor controlado (endpoint renova-mcp/v1/mcp).
+add_filter( 'mcp_adapter_create_default_server', '__return_false' );
 
 // Registra la categoría y todas las "abilities" (herramientas) en el núcleo.
 add_action( 'wp_abilities_api_categories_init', array( Abilities::class, 'register_category' ) );

@@ -546,6 +546,20 @@ class Abilities {
 	}
 
 	/**
+	 * Valida y normaliza un estado de publicación (post_status).
+	 *
+	 * @param string $status Estado indicado por el usuario.
+	 * @return string|false Estado válido o false si no lo es.
+	 */
+	private static function sanitize_status( $status ) {
+		$status  = sanitize_key( (string) $status );
+		$allowed = array_keys( get_post_statuses() );
+		$allowed[] = 'future';
+
+		return in_array( $status, $allowed, true ) ? $status : false;
+	}
+
+	/**
 	 * Información general del sitio.
 	 *
 	 * @return array
@@ -725,7 +739,9 @@ class Abilities {
 			deactivate_plugins( $plugin );
 		}
 
-		WP_Filesystem();
+		if ( ! WP_Filesystem() ) {
+			return new \WP_Error( 'renova_mcp_filesystem', 'No se pudo inicializar el sistema de archivos.' );
+		}
 		$result = delete_plugins( array( $plugin ) );
 
 		if ( is_wp_error( $result ) ) {
@@ -799,7 +815,7 @@ class Abilities {
 		$query = array(
 			'post_type'      => isset( $input['post_type'] ) ? sanitize_key( $input['post_type'] ) : 'post',
 			'post_status'    => isset( $input['status'] ) ? sanitize_key( $input['status'] ) : 'any',
-			'posts_per_page' => isset( $input['number'] ) ? (int) $input['number'] : 20,
+			'posts_per_page' => isset( $input['number'] ) ? min( (int) $input['number'], 100 ) : 20,
 		);
 		if ( ! empty( $input['search'] ) ) {
 			$query['s'] = (string) $input['search'];
@@ -830,11 +846,20 @@ class Abilities {
 	 * @return array|\WP_Error
 	 */
 	public static function create_post( $input ) {
+		if ( isset( $input['status'] ) ) {
+			$status = self::sanitize_status( $input['status'] );
+			if ( false === $status ) {
+				return new \WP_Error( 'renova_mcp_bad_status', 'Estado no válido.' );
+			}
+		} else {
+			$status = 'publish';
+		}
+
 		$postarr = array(
 			'post_title'   => isset( $input['title'] ) ? wp_strip_all_tags( $input['title'] ) : '',
 			'post_content' => isset( $input['content'] ) ? (string) $input['content'] : '',
 			'post_type'    => isset( $input['post_type'] ) ? sanitize_key( $input['post_type'] ) : 'page',
-			'post_status'  => isset( $input['status'] ) ? sanitize_key( $input['status'] ) : 'publish',
+			'post_status'  => $status,
 		);
 		if ( isset( $input['excerpt'] ) ) {
 			$postarr['post_excerpt'] = (string) $input['excerpt'];
@@ -877,7 +902,11 @@ class Abilities {
 			$postarr['post_content'] = (string) $input['content'];
 		}
 		if ( isset( $input['status'] ) ) {
-			$postarr['post_status'] = sanitize_key( $input['status'] );
+			$status = self::sanitize_status( $input['status'] );
+			if ( false === $status ) {
+				return new \WP_Error( 'renova_mcp_bad_status', 'Estado no válido.' );
+			}
+			$postarr['post_status'] = $status;
 		}
 		if ( isset( $input['excerpt'] ) ) {
 			$postarr['post_excerpt'] = (string) $input['excerpt'];

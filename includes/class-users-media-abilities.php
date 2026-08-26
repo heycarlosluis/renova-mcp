@@ -371,7 +371,7 @@ class Users_Media_Abilities {
 	 */
 	public static function list_users( $input ) {
 		$args = array(
-			'number' => isset( $input['number'] ) ? (int) $input['number'] : 50,
+			'number' => isset( $input['number'] ) ? min( (int) $input['number'], 100 ) : 50,
 		);
 		if ( ! empty( $input['role'] ) ) {
 			$args['role'] = sanitize_key( $input['role'] );
@@ -497,8 +497,18 @@ class Users_Media_Abilities {
 	public static function delete_user( $input ) {
 		require_once ABSPATH . 'wp-admin/includes/user.php';
 		$id = isset( $input['id'] ) ? (int) $input['id'] : 0;
-		if ( ! $id || ! get_user_by( 'id', $id ) ) {
+		$user = $id ? get_user_by( 'id', $id ) : false;
+		if ( ! $user ) {
 			return new \WP_Error( 'renova_mcp_user_not_found', 'No se encontró el usuario indicado.' );
+		}
+		if ( get_current_user_id() === $id ) {
+			return new \WP_Error( 'renova_mcp_self_delete', 'No puedes eliminar tu propio usuario.' );
+		}
+		if ( in_array( 'administrator', (array) $user->roles, true ) ) {
+			$admins = get_users( array( 'role' => 'administrator', 'fields' => 'ID' ) );
+			if ( count( $admins ) <= 1 ) {
+				return new \WP_Error( 'renova_mcp_last_admin', 'No puedes eliminar al último administrador del sitio.' );
+			}
 		}
 		$reassign = ! empty( $input['reassign'] ) ? (int) $input['reassign'] : null;
 		$ok       = wp_delete_user( $id, $reassign );
@@ -538,7 +548,7 @@ class Users_Media_Abilities {
 		$args = array(
 			'post_type'      => 'attachment',
 			'post_status'    => 'inherit',
-			'posts_per_page' => isset( $input['number'] ) ? (int) $input['number'] : 30,
+			'posts_per_page' => isset( $input['number'] ) ? min( (int) $input['number'], 100 ) : 30,
 		);
 		if ( ! empty( $input['mime_type'] ) ) {
 			$args['post_mime_type'] = (string) $input['mime_type'];
@@ -600,8 +610,13 @@ class Users_Media_Abilities {
 		if ( is_wp_error( $tmp ) ) {
 			return $tmp;
 		}
+		$path     = wp_parse_url( $url, PHP_URL_PATH );
+		$filename = $path ? basename( (string) $path ) : '';
+		if ( '' === $filename ) {
+			$filename = 'media-' . wp_generate_password( 12, false );
+		}
 		$file_array = array(
-			'name'     => basename( wp_parse_url( $url, PHP_URL_PATH ) ),
+			'name'     => $filename,
 			'tmp_name' => $tmp,
 		);
 		$attachment_id = media_handle_sideload( $file_array, $post_id, isset( $input['title'] ) ? (string) $input['title'] : null );

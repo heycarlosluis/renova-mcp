@@ -2,6 +2,21 @@
 
 Todas las versiones notables de **Renova MCP Control**.
 
+## 1.2.0
+
+- **Dependencias**: `wordpress/mcp-adapter` sube a `^0.6` (v0.6.1) y `wordpress/php-mcp-schema` a v0.1.3.
+- **Seguridad**: se desactiva el servidor MCP por defecto del adaptador
+  (`/wp-json/mcp/mcp-adapter-default-server`), que exponía abilities `discover`/`execute`
+  sobre cualquier ability registrada; solo queda el endpoint controlado de Renova.
+- **Seguridad**: `delete-user` impide eliminar tu propio usuario y al último administrador.
+- **Robustez**: se acotan los límites de resultados (`number`) en listados de contenido,
+  términos, usuarios, medios, comentarios, plantillas y registros de Rank Math.
+- **Correcciones**: `upload-media` genera un nombre de archivo válido cuando la URL no
+  aporta uno; `create-post`/`update-post` validan el `post_status`; `delete-plugin`
+  comprueba `WP_Filesystem()`; `elementor-list-content` evita consultas N+1 al filtrar.
+- **Mantenimiento**: cabecera actualizada (`Tested up to: 7.1`, URI del repo corregida)
+  y se añade `uninstall.php` para limpiar las copias de seguridad de Elementor.
+
 ## 1.1.0
 
 - **Rank Math SEO** (13 herramientas): meta SEO por entrada (título, descripción,

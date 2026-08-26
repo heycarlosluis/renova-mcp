@@ -43,6 +43,7 @@ class ComposerStaticInit7111c01bf82eb5b68da3388588990e36
         'WP\\MCP\\Abilities\\DiscoverAbilitiesAbility' => __DIR__ . '/..' . '/wordpress/mcp-adapter/includes/Abilities/DiscoverAbilitiesAbility.php',
         'WP\\MCP\\Abilities\\ExecuteAbilityAbility' => __DIR__ . '/..' . '/wordpress/mcp-adapter/includes/Abilities/ExecuteAbilityAbility.php',
         'WP\\MCP\\Abilities\\GetAbilityInfoAbility' => __DIR__ . '/..' . '/wordpress/mcp-adapter/includes/Abilities/GetAbilityInfoAbility.php',
+        'WP\\MCP\\Abilities\\McpAbilityExposure' => __DIR__ . '/..' . '/wordpress/mcp-adapter/includes/Abilities/McpAbilityExposure.php',
         'WP\\MCP\\Abilities\\McpAbilityHelperTrait' => __DIR__ . '/..' . '/wordpress/mcp-adapter/includes/Abilities/McpAbilityHelperTrait.php',
         'WP\\MCP\\Autoloader' => __DIR__ . '/..' . '/wordpress/mcp-adapter/includes/Autoloader.php',
         'WP\\MCP\\Cli\\McpCommand' => __DIR__ . '/..' . '/wordpress/mcp-adapter/includes/Cli/McpCommand.php',

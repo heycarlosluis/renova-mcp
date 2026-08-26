@@ -673,7 +673,7 @@ class Site_Abilities {
 	public static function list_comments( $input ) {
 		$args = array(
 			'status' => isset( $input['status'] ) ? sanitize_key( $input['status'] ) : 'all',
-			'number' => isset( $input['number'] ) ? (int) $input['number'] : 50,
+			'number' => isset( $input['number'] ) ? min( (int) $input['number'], 100 ) : 50,
 		);
 		if ( ! empty( $input['post_id'] ) ) {
 			$args['post_id'] = (int) $input['post_id'];

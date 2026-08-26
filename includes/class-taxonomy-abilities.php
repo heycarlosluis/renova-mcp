@@ -134,7 +134,7 @@ class Taxonomy_Abilities {
 						),
 						'number'     => array(
 							'type'        => 'integer',
-							'description' => __( 'Número máximo de resultados (0 = sin límite).', 'renova-mcp' ),
+							'description' => __( 'Número máximo de resultados (máx. 500).', 'renova-mcp' ),
 							'default'     => 100,
 						),
 					),
@@ -387,7 +387,7 @@ class Taxonomy_Abilities {
 		$args = array(
 			'taxonomy'   => $taxonomy,
 			'hide_empty' => ! empty( $input['hide_empty'] ),
-			'number'     => isset( $input['number'] ) ? (int) $input['number'] : 100,
+			'number'     => isset( $input['number'] ) ? min( (int) $input['number'], 500 ) : 100,
 		);
 		if ( ! empty( $input['search'] ) ) {
 			$args['search'] = (string) $input['search'];
