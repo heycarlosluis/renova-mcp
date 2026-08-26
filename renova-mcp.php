@@ -3,11 +3,12 @@
  * Plugin Name:       Renova MCP Control
  * Plugin URI:        https://github.com/heycarlosluis/renova-mcp
  * Description:       Servidor MCP para control total de WordPress (plugins, temas, contenido, CPT y taxonomías vía ACF, términos, meta, opciones, usuarios, medios, menús, comentarios, utilidades de sitio, Elementor/Elementor Pro y Rank Math SEO) vía la Abilities API + WordPress MCP Adapter.
- * Version:           1.2.0
+ * Version:           1.3.0
  * Requires at least: 6.9
  * Requires PHP:      7.4
  * Tested up to:      7.1
- * Author:            renova
+ * Author:            heycarlosluis
+ * Author URI:        https://heycarlosluis.me
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       renova-mcp
@@ -19,7 +20,7 @@ namespace Renova\MCP;
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'RENOVA_MCP_VERSION', '1.2.0' );
+define( 'RENOVA_MCP_VERSION', '1.3.0' );
 define( 'RENOVA_MCP_DIR', plugin_dir_path( __FILE__ ) );
 define( 'RENOVA_MCP_SERVER_ID', 'renova-mcp-server' );
 define( 'RENOVA_MCP_ROUTE_NAMESPACE', 'renova-mcp/v1' );
@@ -42,6 +43,7 @@ require_once RENOVA_MCP_DIR . 'includes/class-elementor-abilities.php';
 require_once RENOVA_MCP_DIR . 'includes/class-rankmath-abilities.php';
 require_once RENOVA_MCP_DIR . 'includes/class-users-media-abilities.php';
 require_once RENOVA_MCP_DIR . 'includes/class-site-abilities.php';
+require_once RENOVA_MCP_DIR . 'includes/class-admin-page.php';
 
 /**
  * Inicializa el MCP Adapter. Su instancia engancha la creación de servidores
@@ -96,6 +98,9 @@ add_action( 'wp_abilities_api_init', array( Users_Media_Abilities::class, 'regis
 
 // Abilities de menús, comentarios y utilidades de sitio (permalinks, caché, updates).
 add_action( 'wp_abilities_api_init', array( Site_Abilities::class, 'register' ) );
+
+// Página de administración con la guía de configuración.
+Admin_Page::register();
 
 /**
  * Crea el servidor MCP exponiendo las abilities como herramientas (tools).

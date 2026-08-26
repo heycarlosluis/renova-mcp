@@ -2,6 +2,12 @@
 
 Todas las versiones notables de **Renova MCP Control**.
 
+## 1.3.0
+
+- **Página de administración**: nueva entrada "Renova MCP" en el menú con una guía
+  de configuración visual (endpoint con copiar, generación en vivo del header Basic,
+  y configuraciones listas para Claude Desktop, Claude Code, Cursor y Codex/ChatGPT).
+
 ## 1.2.0
 
 - **Dependencias**: `wordpress/mcp-adapter` sube a `^0.6` (v0.6.1) y `wordpress/php-mcp-schema` a v0.1.3.

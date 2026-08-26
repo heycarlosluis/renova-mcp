@@ -24,6 +24,11 @@ un dominio concreto. Para instalarlo en un sitio nuevo:
 Las herramientas de ACF, Elementor y Rank Math se activan solas **solo si** ese plugin está
 presente; si no, devuelven un `WP_Error` claro sin romper nada.
 
+Tras activarlo, verás una entrada **Renova MCP** en el menú de administración con una guía
+de configuración visual: endpoint con botón de copiar, generador en vivo del header de
+autenticación y configuraciones listas para Claude Desktop, Claude Code, Cursor y
+Codex/ChatGPT.
+
 ## Endpoint
 
 Una vez activado el plugin, el servidor MCP queda disponible en:

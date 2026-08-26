@@ -1,0 +1,303 @@
+/*
+ * Estilos de la página "Renova MCP" (guía de configuración).
+ */
+
+.renova-mcp-wrap {
+	max-width: 1080px;
+	margin: 20px 20px 0 0;
+	color: #1a202c;
+}
+
+.renova-mcp-header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 16px;
+	margin-bottom: 20px;
+}
+
+.renova-mcp-title {
+	margin: 0 0 4px;
+	font-size: 24px;
+	line-height: 1.2;
+	font-weight: 700;
+	color: #1a202c;
+}
+
+.renova-mcp-lead {
+	margin: 0;
+	color: #64748b;
+	font-size: 14px;
+	max-width: 640px;
+}
+
+.renova-mcp-badge {
+	display: inline-flex;
+	align-items: center;
+	padding: 4px 12px;
+	border-radius: 999px;
+	background: #eef2ff;
+	color: #4f46e5;
+	font-size: 12px;
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+.renova-mcp-card {
+	background: #fff;
+	border: 1px solid #e2e8f0;
+	border-radius: 16px;
+	padding: 20px;
+	box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.renova-mcp-card-title {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 0 0 12px;
+	font-size: 16px;
+	font-weight: 700;
+	color: #1a202c;
+}
+
+.renova-mcp-step {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	border-radius: 8px;
+	background: #4f46e5;
+	color: #fff;
+	font-size: 13px;
+	font-weight: 700;
+	flex: none;
+}
+
+.renova-mcp-overline {
+	display: block;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: #6b7280;
+	margin-bottom: 8px;
+}
+
+.renova-mcp-pill {
+	display: inline-flex;
+	align-items: center;
+	padding: 3px 10px;
+	border-radius: 999px;
+	background: #ecfdf5;
+	color: #047857;
+	font-size: 12px;
+	font-weight: 600;
+}
+
+.renova-mcp-endpoint {
+	margin-bottom: 20px;
+}
+
+.renova-mcp-endpoint-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	margin-bottom: 8px;
+}
+
+.renova-mcp-endpoint-row {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.renova-mcp-endpoint-url {
+	flex: 1;
+	min-width: 0;
+	display: block;
+	overflow-x: auto;
+	white-space: nowrap;
+	padding: 14px 16px;
+	border-radius: 12px;
+	background: #f8fafc;
+	border: 1px solid #e2e8f0;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-size: 13px;
+	color: #4f46e5;
+}
+
+.renova-mcp-hint {
+	margin: 10px 0 0;
+	color: #64748b;
+	font-size: 13px;
+	line-height: 1.5;
+}
+
+.renova-mcp-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 20px;
+	align-items: start;
+}
+
+@media (max-width: 900px) {
+	.renova-mcp-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+.renova-mcp-col {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.renova-mcp-steps {
+	margin: 0;
+	padding-left: 20px;
+	color: #334155;
+	font-size: 14px;
+	line-height: 1.6;
+}
+
+.renova-mcp-steps li + li {
+	margin-top: 6px;
+}
+
+.renova-mcp-form {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px;
+}
+
+@media (max-width: 640px) {
+	.renova-mcp-form {
+		grid-template-columns: 1fr;
+	}
+}
+
+.renova-mcp-field {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.renova-mcp-field span {
+	font-size: 12px;
+	font-weight: 600;
+	color: #475569;
+}
+
+.renova-mcp-field input {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 9px 12px;
+	border-radius: 10px;
+	border: 1px solid #cbd5e1;
+	font-size: 14px;
+	color: #1a202c;
+}
+
+.renova-mcp-field input:focus {
+	border-color: #4f46e5;
+	box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+	outline: none;
+}
+
+.renova-mcp-auth-row {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-top: 12px;
+}
+
+.renova-mcp-auth {
+	flex: 1;
+	min-width: 0;
+	overflow-x: auto;
+	white-space: nowrap;
+	padding: 10px 14px;
+	border-radius: 10px;
+	background: #f8fafc;
+	border: 1px solid #e2e8f0;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-size: 13px;
+	color: #334155;
+}
+
+.renova-mcp-client {
+	border: 1px solid #eef2f7;
+	border-radius: 12px;
+	padding: 14px;
+	background: #fbfcfe;
+}
+
+.renova-mcp-client + .renova-mcp-client {
+	margin-top: 12px;
+}
+
+.renova-mcp-client-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	margin-bottom: 10px;
+}
+
+.renova-mcp-client-name {
+	display: block;
+	font-size: 14px;
+	font-weight: 600;
+	color: #1a202c;
+}
+
+.renova-mcp-client-sub {
+	display: block;
+	font-size: 12px;
+	color: #94a3b8;
+	margin-top: 2px;
+}
+
+.renova-mcp-pre {
+	margin: 0;
+	padding: 12px 14px;
+	border-radius: 10px;
+	background: #0f172a;
+	color: #e2e8f0;
+	overflow-x: auto;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-size: 12px;
+	line-height: 1.55;
+}
+
+.renova-mcp-snippet {
+	font-family: inherit;
+	font-size: inherit;
+	color: inherit;
+	white-space: pre;
+}
+
+.renova-mcp-copy {
+	white-space: nowrap;
+	flex: none;
+}
+
+.renova-mcp-security .renova-mcp-card-title {
+	margin-bottom: 8px;
+}
+
+.renova-mcp-bullets {
+	margin: 0;
+	padding-left: 20px;
+	color: #475569;
+	font-size: 13px;
+	line-height: 1.6;
+}
+
+.renova-mcp-bullets li + li {
+	margin-top: 4px;
+}
