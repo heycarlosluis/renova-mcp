@@ -139,6 +139,13 @@ class Rankmath_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'update_post_seo' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -184,6 +191,13 @@ class Rankmath_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'set_post_schema' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -207,7 +221,13 @@ class Rankmath_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'delete_post_schema' ),
 				'permission_callback' => $perm,
-				'meta'                => array( 'annotations' => array( 'destructive' => true ) ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => true,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -257,6 +277,13 @@ class Rankmath_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'update_settings' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -317,6 +344,13 @@ class Rankmath_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'add_redirection' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => false,
+					),
+				),
 			)
 		);
 
@@ -345,6 +379,13 @@ class Rankmath_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'update_redirection' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -367,7 +408,13 @@ class Rankmath_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'delete_redirection' ),
 				'permission_callback' => $perm,
-				'meta'                => array( 'annotations' => array( 'destructive' => true ) ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => true,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -404,7 +451,13 @@ class Rankmath_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'clear_404_log' ),
 				'permission_callback' => $perm,
-				'meta'                => array( 'annotations' => array( 'destructive' => true ) ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => true,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 	}

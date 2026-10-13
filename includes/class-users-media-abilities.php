@@ -140,6 +140,13 @@ class Users_Media_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'create_user' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => false,
+					),
+				),
 			)
 		);
 
@@ -168,6 +175,13 @@ class Users_Media_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'update_user' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -194,7 +208,13 @@ class Users_Media_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'delete_user' ),
 				'permission_callback' => $perm,
-				'meta'                => array( 'annotations' => array( 'destructive' => true ) ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => true,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -283,6 +303,13 @@ class Users_Media_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'upload_media' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => false,
+					),
+				),
 			)
 		);
 
@@ -310,7 +337,13 @@ class Users_Media_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'delete_media' ),
 				'permission_callback' => $perm,
-				'meta'                => array( 'annotations' => array( 'destructive' => true ) ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => true,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -337,6 +370,13 @@ class Users_Media_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'set_featured_image' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 	}

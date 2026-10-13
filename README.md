@@ -18,16 +18,21 @@ un dominio concreto. Para instalarlo en un sitio nuevo:
 1. Copia la carpeta `renova-mcp` a `wp-content/plugins/` (por SFTP, ZIP o Git). El directorio
    `vendor/` viaja en el repo, así que **no necesitas ejecutar Composer en el servidor**.
 2. Actívalo en *Plugins*.
-3. Crea una **Contraseña de aplicación** para un usuario administrador (ver Autenticación).
-4. Configura tu cliente MCP con la URL del endpoint y esas credenciales.
+3. En **Renova MCP → Tokens**, crea un token de acceso para tu cliente (ver Autenticación).
+4. Configura tu cliente MCP con la URL del endpoint y ese token.
 
-Las herramientas de ACF, Elementor y Rank Math se activan solas **solo si** ese plugin está
-presente; si no, devuelven un `WP_Error` claro sin romper nada.
+Las herramientas de ACF, Elementor y Rank Math **solo se exponen** si ese plugin está
+activo: un sitio sin ninguno de los tres publica 55 herramientas en lugar de 117.
 
-Tras activarlo, verás una entrada **Renova MCP** en el menú de administración con una guía
-de configuración visual: endpoint con botón de copiar, generador en vivo del header de
-autenticación y configuraciones listas para Claude Desktop, Claude Code, Cursor y
-Codex/ChatGPT.
+Tras activarlo, verás una entrada **Renova MCP** en el menú de administración con cuatro
+secciones:
+
+- **Conexión**: endpoint con botón de copiar y configuraciones listas para Claude Desktop,
+  Claude Code, Cursor, Codex/ChatGPT, Poke y conectores con OAuth.
+- **Tokens**: crear y revocar tokens de acceso y ver los clientes conectados por OAuth.
+- **Herramientas y seguridad**: grupos expuestos, modo solo lectura, límite de peticiones
+  y OAuth.
+- **Actividad**: registro de quién ejecutó qué herramienta y con qué resultado.
 
 ## Endpoint
 
@@ -41,15 +46,76 @@ https://TU-DOMINIO/wp-json/renova-mcp/v1/mcp
 > desactiva automáticamente: expondría abilities `discover`/`execute` sobre cualquier
 > ability registrada. Solo queda expuesto el endpoint controlado de Renova.
 
+## Transporte
+
+El endpoint habla **Streamable HTTP**, el transporte estándar de MCP (versiones de protocolo
+2025-11-25, 2025-06-18 y 2024-11-05). No existe una ruta `/sse`: ese es el transporte
+anterior, ya retirado de la especificación. Un cliente que pida "URL del servidor MCP"
+funciona con la URL de arriba tal cual.
+
 ## Autenticación
 
-Las herramientas exigen un usuario **administrador** (`manage_options`). El endpoint REST
-acepta **Contraseñas de aplicación** de WordPress (Basic Auth sobre HTTPS):
+Las herramientas exigen un usuario **administrador** (`manage_options`). Hay tres formas de
+identificarse; todas requieren HTTPS (o un entorno marcado como `local`).
 
-1. En el admin de WordPress: **Usuarios → Perfil → Contraseñas de aplicación**.
-2. Crea una contraseña de aplicación (ej. nombre "MCP").
-3. Configura tu cliente MCP con autenticación Basic: usuario = tu login, contraseña = la
-   contraseña de aplicación generada.
+### Token de acceso (recomendado)
+
+En **Renova MCP → Tokens** crea un token por cliente. Se envía como
+`Authorization: Bearer rmcp_…` y funciona con cualquier cliente que acepte una clave de API,
+incluidos los que no permiten Basic Auth (por ejemplo, Poke).
+
+- El token se muestra **una sola vez**; en la base de datos solo se guarda su hash SHA-256.
+- Puedes limitarlo a ciertos **grupos de herramientas**, marcarlo como **solo lectura** y
+  darle **caducidad**. Un token limitado ni siquiera ve en `tools/list` lo que no puede usar.
+- El alcance solo restringe: nunca da más permisos que los del usuario que creó el token.
+
+### Contraseña de aplicación
+
+Sigue funcionando la autenticación Basic con una contraseña de aplicación de WordPress
+(**Usuarios → Perfil → Contraseñas de aplicación**): usuario = tu login, contraseña = la
+contraseña de aplicación.
+
+### OAuth 2.1 (opcional)
+
+Para clientes que solo piden la URL y abren el navegador para autorizar (conectores de
+Claude.ai, ChatGPT…). Se activa en **Herramientas y seguridad**; viene **desactivado**.
+
+- Descubrimiento en `/.well-known/oauth-protected-resource` y
+  `/.well-known/oauth-authorization-server`, registro dinámico de clientes, código de
+  autorización con **PKCE S256** obligatorio y rotación del token de refresco.
+- Solo un administrador con sesión iniciada puede aprobar una conexión, eligiendo grupos y
+  solo lectura en la pantalla de consentimiento. Se revoca desde **Tokens**.
+- Requiere enlaces permanentes distintos de "Simple" y que WordPress esté en la raíz del
+  dominio (las direcciones `/.well-known/` se sirven desde ahí).
+
+## Seguridad
+
+- **Grupos de herramientas**: Contenido, Ajustes del sitio, Usuarios, Plugins/temas/
+  actualizaciones, ACF, Elementor y Rank Math. Cada uno se puede desactivar entero.
+- **Modo solo lectura**: oculta y bloquea todo lo que crea, modifica o elimina.
+- **Anotaciones**: cada herramienta declara si es de lectura, destructiva e idempotente
+  (`readOnlyHint`, `destructiveHint`, `idempotentHint`) para que el cliente sepa cuándo
+  pedir confirmación.
+- **Límite de peticiones**: 120 por minuto y credencial por defecto (30 por IP sin
+  autenticar); al superarlo responde `429` con `Retry-After`.
+- **Registro de actividad**: llamadas a herramientas, inicios de sesión MCP y tokens
+  rechazados, con usuario, credencial, IP, resultado y duración. De los argumentos solo se
+  guardan los identificadores (id, slug, clave…); del resto, el tipo y el tamaño. Se
+  conserva 30 días por defecto.
+
+Filtros disponibles: `renova_mcp_is_secure_request` (sitios detrás de un proxy que termina
+TLS) y `renova_mcp_client_ip` (IP real detrás de un proxy de confianza).
+
+## Pruebas
+
+```bash
+bash tests/run.sh
+```
+
+Monta un WordPress desechable sobre SQLite (sin Docker ni MySQL), activa el plugin y
+recorre el protocolo de extremo a extremo: autenticación, transporte, listado y ejecución
+de herramientas, alcance de los tokens, flujo OAuth completo, límite de peticiones y
+registro de actividad. Requiere `php` (con `sqlite3` y `curl`), `wp-cli`, `curl` y `unzip`.
 
 ## Herramientas disponibles
 
@@ -129,7 +195,7 @@ acepta **Contraseñas de aplicación** de WordPress (Basic Auth sobre HTTPS):
 ### Herramientas Elementor / Elementor Pro (solo si Elementor está activo)
 
 Operan directamente sobre el árbol JSON de `_elementor_data`, regenerando la caché de CSS
-tras cada cambio. Si Elementor no está activo, cada herramienta devuelve un `WP_Error` claro.
+tras cada cambio. Si Elementor no está activo, estas herramientas no se exponen.
 
 | Herramienta | Acción |
 |-------------|--------|

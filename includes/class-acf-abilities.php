@@ -199,6 +199,13 @@ class Acf_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'update_field' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -220,7 +227,13 @@ class Acf_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'delete_field' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
-				'meta'                => array( 'annotations' => array( 'destructive' => true ) ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => true,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -246,6 +259,13 @@ class Acf_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'add_row' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => false,
+					),
+				),
 			)
 		);
 
@@ -275,6 +295,13 @@ class Acf_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'update_row' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -300,7 +327,13 @@ class Acf_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'delete_row' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
-				'meta'                => array( 'annotations' => array( 'destructive' => true ) ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => true,
+						'idempotent'  => false,
+					),
+				),
 			)
 		);
 
@@ -387,6 +420,13 @@ class Acf_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'create_field_group' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => false,
+					),
+				),
 			)
 		);
 
@@ -410,6 +450,13 @@ class Acf_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'update_field_group' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -433,7 +480,13 @@ class Acf_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'delete_field_group' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
-				'meta'                => array( 'annotations' => array( 'destructive' => true ) ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => true,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 

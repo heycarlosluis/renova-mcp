@@ -1,5 +1,6 @@
 /*
- * Interacciones de la guía: credencial local, copiado y selector de cliente.
+ * Interacciones de la administración: credencial local, copiado, selector de
+ * cliente y confirmaciones.
  */
 (function () {
 	'use strict';
@@ -50,24 +51,76 @@
 		}
 	}
 
+	function authMode() {
+		var selected = document.querySelector('input[name="renova_mcp_auth_mode"]:checked');
+		return selected ? selected.value : 'token';
+	}
+
+	// Sustituye en cada configuración la cabecera Authorization (__AUTH__) y el
+	// token en claro (__TOKEN__, para clientes que piden solo la clave).
 	function updateSnippets() {
 		var user = document.getElementById('renova-mcp-user');
 		var pass = document.getElementById('renova-mcp-pass');
+		var tokenInput = document.getElementById('renova-mcp-token');
 		var auth = document.getElementById('renova-mcp-auth');
-		var username = user ? user.value.trim() : '';
-		var password = pass ? pass.value.trim() : '';
-		var token = username && password ? b64(username + ':' + password) : '';
+		var token = tokenInput ? tokenInput.value.trim() : '';
+		var header;
+
+		if (authMode() === 'basic') {
+			var username = user ? user.value.trim() : '';
+			var password = pass ? pass.value.trim() : '';
+			var encoded = username && password ? b64(username + ':' + password) : '';
+			header = 'Basic ' + (encoded || 'TU_CREDENCIAL');
+			token = '';
+		} else {
+			header = 'Bearer ' + (token || 'TU_TOKEN');
+		}
 
 		if (auth) {
-			auth.textContent = token ? 'Basic ' + token : 'Basic __AUTH__';
+			auth.textContent = header;
 		}
 
 		var snippets = document.querySelectorAll('.renova-mcp-snippet');
 		for (var i = 0; i < snippets.length; i++) {
 			var template = snippets[i].getAttribute('data-template');
 			if (template) {
-				snippets[i].textContent = decodeTemplate(template).split('__AUTH__').join(token || '__AUTH__');
+				snippets[i].textContent = decodeTemplate(template)
+					.split('__AUTH__')
+					.join(header)
+					.split('__TOKEN__')
+					.join(token || 'TU_TOKEN');
 			}
+		}
+	}
+
+	function setupAuthMode() {
+		var radios = document.querySelectorAll('input[name="renova_mcp_auth_mode"]');
+		var forms = document.querySelectorAll('[data-auth-mode]');
+
+		function apply() {
+			var mode = authMode();
+			for (var i = 0; i < forms.length; i++) {
+				forms[i].hidden = forms[i].getAttribute('data-auth-mode') !== mode;
+			}
+			updateSnippets();
+		}
+
+		for (var j = 0; j < radios.length; j++) {
+			radios[j].addEventListener('change', apply);
+		}
+		if (radios.length) {
+			apply();
+		}
+	}
+
+	function setupConfirmations() {
+		var buttons = document.querySelectorAll('[data-confirm]');
+		for (var i = 0; i < buttons.length; i++) {
+			buttons[i].addEventListener('click', function (event) {
+				if (!window.confirm(event.currentTarget.getAttribute('data-confirm'))) {
+					event.preventDefault();
+				}
+			});
 		}
 	}
 
@@ -207,30 +260,36 @@
 	}
 
 	function setupPasswordVisibility() {
-		var button = document.querySelector('.renova-mcp-visibility');
-		var input = document.getElementById('renova-mcp-pass');
-		if (!button || !input) {
-			return;
-		}
+		var buttons = document.querySelectorAll('.renova-mcp-visibility');
+		for (var i = 0; i < buttons.length; i++) {
+			(function (button) {
+				var input = document.querySelector(button.getAttribute('data-toggle'));
+				if (!input) {
+					return;
+				}
 
-		button.addEventListener('click', function () {
-			var visible = input.type === 'text';
-			input.type = visible ? 'password' : 'text';
-			button.setAttribute('aria-pressed', visible ? 'false' : 'true');
-			button.setAttribute('aria-label', visible ? 'Mostrar contraseña' : 'Ocultar contraseña');
-			replaceIcon(button, visible ? 'eye' : 'eye-off');
-		});
+				button.addEventListener('click', function () {
+					var visible = input.type === 'text';
+					input.type = visible ? 'password' : 'text';
+					button.setAttribute('aria-pressed', visible ? 'false' : 'true');
+					button.setAttribute('aria-label', button.getAttribute(visible ? 'data-label-show' : 'data-label-hide'));
+					replaceIcon(button, visible ? 'eye' : 'eye-off');
+				});
+			})(buttons[i]);
+		}
 	}
 
 	document.addEventListener('DOMContentLoaded', function () {
 		renderIcons();
-		var user = document.getElementById('renova-mcp-user');
-		var pass = document.getElementById('renova-mcp-pass');
-		if (user && pass) {
-			user.addEventListener('input', updateSnippets);
-			pass.addEventListener('input', updateSnippets);
-			updateSnippets();
+		var credentialFields = ['renova-mcp-user', 'renova-mcp-pass', 'renova-mcp-token'];
+		for (var f = 0; f < credentialFields.length; f++) {
+			var field = document.getElementById(credentialFields[f]);
+			if (field) {
+				field.addEventListener('input', updateSnippets);
+			}
 		}
+		setupAuthMode();
+		setupConfirmations();
 
 		var copyButtons = document.querySelectorAll('.renova-mcp-copy');
 		for (var i = 0; i < copyButtons.length; i++) {

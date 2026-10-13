@@ -203,6 +203,13 @@ class Taxonomy_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'create_term' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => false,
+					),
+				),
 			)
 		);
 
@@ -230,6 +237,13 @@ class Taxonomy_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'update_term' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -253,7 +267,13 @@ class Taxonomy_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'delete_term' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
-				'meta'                => array( 'annotations' => array( 'destructive' => true ) ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => true,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -288,6 +308,13 @@ class Taxonomy_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'set_post_terms' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 

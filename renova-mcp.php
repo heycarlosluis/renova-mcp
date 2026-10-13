@@ -3,7 +3,7 @@
  * Plugin Name:       Renova MCP Control
  * Plugin URI:        https://github.com/heycarlosluis/renova-mcp
  * Description:       Servidor MCP para control total de WordPress (plugins, temas, contenido, CPT y taxonomías vía ACF, términos, meta, opciones, usuarios, medios, menús, comentarios, utilidades de sitio, Elementor/Elementor Pro y Rank Math SEO) vía la Abilities API + WordPress MCP Adapter.
- * Version:           1.3.1
+ * Version:           1.4.0
  * Requires at least: 6.9
  * Requires PHP:      7.4
  * Tested up to:      7.1
@@ -20,7 +20,7 @@ namespace Renova\MCP;
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'RENOVA_MCP_VERSION', '1.3.1' );
+define( 'RENOVA_MCP_VERSION', '1.4.0' );
 define( 'RENOVA_MCP_DIR', plugin_dir_path( __FILE__ ) );
 define( 'RENOVA_MCP_URL', plugin_dir_url( __FILE__ ) );
 define( 'RENOVA_MCP_SERVER_ID', 'renova-mcp-server' );
@@ -44,7 +44,27 @@ require_once RENOVA_MCP_DIR . 'includes/class-elementor-abilities.php';
 require_once RENOVA_MCP_DIR . 'includes/class-rankmath-abilities.php';
 require_once RENOVA_MCP_DIR . 'includes/class-users-media-abilities.php';
 require_once RENOVA_MCP_DIR . 'includes/class-site-abilities.php';
+require_once RENOVA_MCP_DIR . 'includes/class-settings.php';
+require_once RENOVA_MCP_DIR . 'includes/class-catalog.php';
+require_once RENOVA_MCP_DIR . 'includes/class-store.php';
+require_once RENOVA_MCP_DIR . 'includes/class-request.php';
+require_once RENOVA_MCP_DIR . 'includes/class-tokens.php';
+require_once RENOVA_MCP_DIR . 'includes/class-access.php';
+require_once RENOVA_MCP_DIR . 'includes/class-rate-limit.php';
+require_once RENOVA_MCP_DIR . 'includes/class-audit-log.php';
+require_once RENOVA_MCP_DIR . 'includes/class-oauth.php';
+require_once RENOVA_MCP_DIR . 'includes/class-admin-screens.php';
 require_once RENOVA_MCP_DIR . 'includes/class-admin-page.php';
+
+// Tablas propias, autenticación por token, alcances por herramienta, límite de
+// peticiones, registro de actividad y OAuth.
+Store::register();
+Tokens::register();
+Access::register();
+Rate_Limit::register();
+Audit_Log::register();
+OAuth::register();
+register_deactivation_hook( __FILE__, array( Store::class, 'unschedule' ) );
 
 /**
  * Inicializa el MCP Adapter. Su instancia engancha la creación de servidores
@@ -64,6 +84,9 @@ add_action(
 			);
 			return;
 		}
+
+		// Implementa una interfaz del adaptador: solo puede cargarse si este existe.
+		require_once RENOVA_MCP_DIR . 'includes/class-audit-observability-handler.php';
 
 		\WP\MCP\Core\McpAdapter::instance();
 	}
@@ -120,19 +143,10 @@ add_action(
 			RENOVA_MCP_VERSION,
 			array( \WP\MCP\Transport\HttpTransport::class ),
 			\WP\MCP\Infrastructure\ErrorHandling\ErrorLogMcpErrorHandler::class,
-			\WP\MCP\Infrastructure\Observability\NullMcpObservabilityHandler::class,
-			// Siempre se exponen las herramientas ACF; si ACF no está activo,
-			// cada herramienta devuelve un WP_Error claro al ejecutarse.
-			array_merge(
-				Abilities::tool_ids(),
-				Acf_Abilities::tool_ids(),
-				Acf_Types_Abilities::tool_ids(),
-				Taxonomy_Abilities::tool_ids(),
-				Elementor_Abilities::tool_ids(),
-				Rankmath_Abilities::tool_ids(),
-				Users_Media_Abilities::tool_ids(),
-				Site_Abilities::tool_ids()
-			)
+			Audit_Observability_Handler::class,
+			// Solo los grupos activados cuyo plugin está presente y, en modo
+			// solo lectura, únicamente las herramientas de consulta.
+			Catalog::exposed_tool_ids()
 		);
 	}
 );

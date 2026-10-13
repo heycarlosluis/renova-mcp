@@ -2,6 +2,32 @@
 
 Todas las versiones notables de **Renova MCP Control**.
 
+## 1.4.0
+
+- **Tokens de acceso**: nueva autenticación `Authorization: Bearer` con tokens creados
+  desde la administración, guardados solo como hash y revocables. Permite conectar
+  clientes que no aceptan Basic Auth (Poke, entre otros). Las contraseñas de aplicación
+  siguen funcionando.
+- **Alcances por token**: cada token puede limitarse a grupos de herramientas, a solo
+  lectura y tener caducidad. Un token limitado solo ve en `tools/list` lo que puede usar.
+- **Menos herramientas expuestas**: las de ACF, Elementor y Rank Math ya no se publican si
+  su plugin no está activo, y cada grupo puede desactivarse. Nuevo modo solo lectura global.
+- **Anotaciones completas**: las 117 herramientas declaran `readOnlyHint` y, las de
+  escritura, `destructiveHint` e `idempotentHint`.
+- **Registro de actividad**: sustituye al manejador nulo del adaptador; anota llamadas,
+  sesiones y tokens rechazados sin volcar el contenido de los argumentos.
+- **Límite de peticiones** por credencial, con respuesta `429` y `Retry-After`.
+- **OAuth 2.1 opcional**: metadatos de descubrimiento, registro dinámico de clientes, PKCE
+  S256, pantalla de consentimiento y rotación del token de refresco. Desactivado por defecto.
+- **Descubrimiento de autenticación**: las respuestas `401` del endpoint incluyen
+  `WWW-Authenticate: Bearer`.
+- **Administración**: nuevas secciones Tokens, Herramientas y seguridad, y Actividad; la
+  guía de conexión añade Poke y conectores con OAuth.
+- **Pruebas**: `tests/run.sh` recorre el protocolo de extremo a extremo sobre un WordPress
+  desechable, y se ejecuta en GitHub Actions.
+- **Base de datos**: dos tablas nuevas (`renova_mcp_tokens`, `renova_mcp_audit`) que se
+  crean al cargar el plugin y se eliminan al desinstalarlo.
+
 ## 1.3.1
 
 - **Guía de conexión rediseñada**: nueva composición visual inspirada en herramientas

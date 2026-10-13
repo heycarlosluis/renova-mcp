@@ -126,7 +126,13 @@ class Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'activate_plugin' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
-				'meta'                => array( 'annotations' => array( 'idempotent' => true ) ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -140,7 +146,13 @@ class Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'deactivate_plugin' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
-				'meta'                => array( 'annotations' => array( 'idempotent' => true ) ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -168,6 +180,13 @@ class Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'install_plugin' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => false,
+					),
+				),
 			)
 		);
 
@@ -181,7 +200,13 @@ class Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'delete_plugin' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
-				'meta'                => array( 'annotations' => array( 'destructive' => true ) ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => true,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -219,6 +244,13 @@ class Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'activate_theme' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -324,6 +356,13 @@ class Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'create_post' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => false,
+					),
+				),
 			)
 		);
 
@@ -351,6 +390,13 @@ class Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'update_post' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -378,7 +424,13 @@ class Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'delete_post' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
-				'meta'                => array( 'annotations' => array( 'destructive' => true ) ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => true,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -436,6 +488,13 @@ class Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'update_post_meta' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -462,7 +521,13 @@ class Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'delete_post_meta' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
-				'meta'                => array( 'annotations' => array( 'destructive' => true ) ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => true,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -512,6 +577,13 @@ class Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'update_option' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => true,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 	}
