@@ -25,3 +25,8 @@ jobs:
 
       - name: Prueba de humo de extremo a extremo
         run: bash tests/run.sh
+
+      - name: Referencia de herramientas sincronizada
+        run: |
+          wp --path="${TMPDIR:-/tmp}/renova-mcp-test/wp" eval-file scripts/generate-tool-reference.php
+          git diff --exit-code -- docs/tools.md docs/tools.json

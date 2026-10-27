@@ -2,6 +2,17 @@
 
 Todas las versiones notables de **Renova MCP Control**.
 
+## Sin publicar
+
+- **Documentación de 1.4.0**: README reorganizado y guías de conexión, seguridad,
+  comportamiento, integraciones y desarrollo alineadas con la implementación.
+- **Referencia completa**: 117 herramientas con sus nombres MCP reales, parámetros,
+  valores predeterminados y anotaciones; catálogo JSON con esquemas de entrada y salida.
+- **Mantenimiento documental**: generador desde las abilities registradas y comprobación
+  de sincronización en GitHub Actions.
+- **Precisiones de uso**: publicación y borrado predeterminados, alcance de los grupos,
+  copia única del árbol Elementor, requisitos de las APIs de terceros y límites de OAuth.
+
 ## 1.4.0
 
 - **Tokens de acceso**: nueva autenticación `Authorization: Bearer` con tokens creados
@@ -79,7 +90,8 @@ Todas las versiones notables de **Renova MCP Control**.
 
 - Control base de WordPress: información del sitio, plugins, temas, contenido (cualquier
   CPT), post-meta, opciones, taxonomías y términos.
-- **ACF** (16): valores, grupos de campos, y registro de CPT/taxonomías vía ACF 6.1+.
+- **ACF** (26): 16 herramientas de valores, filas y grupos de campos, y 10 de registro,
+  consulta y exportación de CPT/taxonomías vía ACF 6.1+.
 - **Elementor / Elementor Pro** (23): árbol de elementos (`_elementor_data`), ajustes de
   página, copias de seguridad, caché, plantillas de biblioteca y kit global.
 - Construido sobre la Abilities API del núcleo de WordPress + WordPress MCP Adapter.

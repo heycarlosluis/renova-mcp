@@ -2,9 +2,9 @@
 /**
  * Habilidades MCP basadas en la API de Advanced Custom Fields (ACF).
  *
- * Cada ability envuelve una función pública de ACF. Solo se registran si ACF
- * está activo (función `get_field` disponible). Cada callback revalida en
- * tiempo de ejecución y devuelve WP_Error si ACF no está presente.
+ * Cada ability envuelve una función pública de ACF. Se registran siempre, pero
+ * Catalog solo las expone por MCP cuando ACF está disponible y el grupo está
+ * habilitado. Cada callback revalida su disponibilidad en tiempo de ejecución.
  *
  * @package Renova\MCP
  */
