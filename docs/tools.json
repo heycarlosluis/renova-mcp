@@ -1,0 +1,3822 @@
+{
+    "version": "1.4.0",
+    "tools": [
+        {
+            "ability": "renova-mcp/get-site-info",
+            "name": "renova-mcp-get-site-info",
+            "group": "site",
+            "label": "Información del sitio",
+            "description": "Devuelve datos generales: nombre, URL, versión de WordPress/PHP, tema activo y conteos de contenido.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object"
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/list-plugins",
+            "name": "renova-mcp-list-plugins",
+            "group": "system",
+            "label": "Listar plugins",
+            "description": "Lista todos los plugins instalados con su estado (activo/inactivo), versión y descripción.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object"
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/activate-plugin",
+            "name": "renova-mcp-activate-plugin",
+            "group": "system",
+            "label": "Activar plugin",
+            "description": "Activa un plugin instalado.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "plugin": {
+                        "type": "string",
+                        "description": "Ruta del plugin (ej. \"akismet/akismet.php\") o su carpeta (ej. \"akismet\")."
+                    }
+                },
+                "required": [
+                    "plugin"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/deactivate-plugin",
+            "name": "renova-mcp-deactivate-plugin",
+            "group": "system",
+            "label": "Desactivar plugin",
+            "description": "Desactiva un plugin activo.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "plugin": {
+                        "type": "string",
+                        "description": "Ruta del plugin (ej. \"akismet/akismet.php\") o su carpeta (ej. \"akismet\")."
+                    }
+                },
+                "required": [
+                    "plugin"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/install-plugin",
+            "name": "renova-mcp-install-plugin",
+            "group": "system",
+            "label": "Instalar plugin",
+            "description": "Instala un plugin desde el repositorio de WordPress.org por su slug. Opcionalmente lo activa.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": false
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "slug": {
+                        "type": "string",
+                        "description": "Slug del plugin en WordPress.org (ej. \"wordpress-seo\")."
+                    },
+                    "activate": {
+                        "type": "boolean",
+                        "description": "Activar tras instalar.",
+                        "default": false
+                    }
+                },
+                "required": [
+                    "slug"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/delete-plugin",
+            "name": "renova-mcp-delete-plugin",
+            "group": "system",
+            "label": "Eliminar plugin",
+            "description": "Desinstala y elimina por completo un plugin del servidor. Acción destructiva.",
+            "annotations": {
+                "readonly": false,
+                "destructive": true,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "plugin": {
+                        "type": "string",
+                        "description": "Ruta del plugin (ej. \"akismet/akismet.php\") o su carpeta (ej. \"akismet\")."
+                    }
+                },
+                "required": [
+                    "plugin"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/list-themes",
+            "name": "renova-mcp-list-themes",
+            "group": "system",
+            "label": "Listar temas",
+            "description": "Lista los temas instalados e indica cuál está activo.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object"
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/activate-theme",
+            "name": "renova-mcp-activate-theme",
+            "group": "system",
+            "label": "Activar tema",
+            "description": "Cambia el tema activo del sitio.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "stylesheet": {
+                        "type": "string",
+                        "description": "Carpeta del tema (stylesheet), ej. \"twentytwentyfive\"."
+                    }
+                },
+                "required": [
+                    "stylesheet"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/list-posts",
+            "name": "renova-mcp-list-posts",
+            "group": "content",
+            "label": "Listar contenido",
+            "description": "Lista entradas o páginas con filtros de tipo, estado, búsqueda y cantidad.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "post_type": {
+                        "type": "string",
+                        "description": "Tipo de contenido (post, page, etc.).",
+                        "default": "post"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "Estado (publish, draft, pending, private, any).",
+                        "default": "any"
+                    },
+                    "search": {
+                        "type": "string",
+                        "description": "Término de búsqueda."
+                    },
+                    "number": {
+                        "type": "integer",
+                        "description": "Número máximo de resultados.",
+                        "default": 20
+                    }
+                }
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/get-post",
+            "name": "renova-mcp-get-post",
+            "group": "content",
+            "label": "Obtener contenido",
+            "description": "Devuelve una entrada/página/CPT completa por su ID: campos del post, meta y términos de todas sus taxonomías.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID del contenido."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/create-post",
+            "name": "renova-mcp-create-post",
+            "group": "content",
+            "label": "Crear entrada o página",
+            "description": "Crea una nueva entrada o página con título, contenido y estado.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": false
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Título."
+                    },
+                    "content": {
+                        "type": "string",
+                        "description": "Contenido (HTML o bloques)."
+                    },
+                    "post_type": {
+                        "type": "string",
+                        "description": "Tipo: \"post\" o \"page\".",
+                        "default": "page"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "Estado: publish, draft, pending, private.",
+                        "default": "publish"
+                    },
+                    "excerpt": {
+                        "type": "string",
+                        "description": "Extracto opcional."
+                    },
+                    "slug": {
+                        "type": "string",
+                        "description": "Slug/URL amigable opcional."
+                    }
+                },
+                "required": [
+                    "title"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/update-post",
+            "name": "renova-mcp-update-post",
+            "group": "content",
+            "label": "Actualizar contenido",
+            "description": "Actualiza una entrada o página existente por su ID.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID del contenido a actualizar."
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "content": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "excerpt": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/delete-post",
+            "name": "renova-mcp-delete-post",
+            "group": "content",
+            "label": "Eliminar contenido",
+            "description": "Envía a la papelera o elimina definitivamente una entrada o página.",
+            "annotations": {
+                "readonly": false,
+                "destructive": true,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID del contenido."
+                    },
+                    "force": {
+                        "type": "boolean",
+                        "description": "Si es true, elimina definitivamente (sin papelera).",
+                        "default": false
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/get-post-meta",
+            "name": "renova-mcp-get-post-meta",
+            "group": "content",
+            "label": "Leer meta de contenido",
+            "description": "Devuelve los metadatos de una entrada/CPT. Si se indica \"key\", devuelve solo esa clave; si no, todas. Envuelve get_post_meta().",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID del contenido."
+                    },
+                    "key": {
+                        "type": "string",
+                        "description": "Clave meta concreta (opcional)."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/update-post-meta",
+            "name": "renova-mcp-update-post-meta",
+            "group": "content",
+            "label": "Actualizar meta de contenido",
+            "description": "Crea o actualiza un metadato de una entrada/CPT. Envuelve update_post_meta(). Para campos ACF usa preferiblemente acf-update-field.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID del contenido."
+                    },
+                    "key": {
+                        "type": "string",
+                        "description": "Clave meta."
+                    },
+                    "value": {
+                        "description": "Valor (texto, número, booleano, array u objeto)."
+                    }
+                },
+                "required": [
+                    "id",
+                    "key",
+                    "value"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/delete-post-meta",
+            "name": "renova-mcp-delete-post-meta",
+            "group": "content",
+            "label": "Eliminar meta de contenido",
+            "description": "Elimina un metadato de una entrada/CPT. Acción destructiva. Envuelve delete_post_meta().",
+            "annotations": {
+                "readonly": false,
+                "destructive": true,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID del contenido."
+                    },
+                    "key": {
+                        "type": "string",
+                        "description": "Clave meta a eliminar."
+                    }
+                },
+                "required": [
+                    "id",
+                    "key"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/get-option",
+            "name": "renova-mcp-get-option",
+            "group": "site",
+            "label": "Leer opción",
+            "description": "Devuelve el valor de una opción de WordPress por su nombre.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Nombre de la opción (ej. \"blogname\", \"blogdescription\")."
+                    }
+                },
+                "required": [
+                    "name"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/update-option",
+            "name": "renova-mcp-update-option",
+            "group": "site",
+            "label": "Actualizar opción",
+            "description": "Crea o actualiza una opción de WordPress. Úsalo con cuidado.",
+            "annotations": {
+                "readonly": false,
+                "destructive": true,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Nombre de la opción."
+                    },
+                    "value": {
+                        "description": "Nuevo valor (texto, número o booleano)."
+                    }
+                },
+                "required": [
+                    "name",
+                    "value"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-get-field",
+            "name": "renova-mcp-acf-get-field",
+            "group": "acf",
+            "label": "ACF: leer campo",
+            "description": "Devuelve el valor de un campo ACF para un contenido. Envuelve get_field().",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "selector": {
+                        "type": "string",
+                        "description": "Nombre o clave (key) del campo ACF."
+                    },
+                    "post_id": {
+                        "type": [
+                            "string",
+                            "integer"
+                        ],
+                        "description": "ID del contenido. Acepta un ID numérico, \"option\" (página de opciones), \"user_X\" o \"term_X\"."
+                    },
+                    "format_value": {
+                        "type": "boolean",
+                        "description": "Aplicar formato de ACF al valor.",
+                        "default": true
+                    }
+                },
+                "required": [
+                    "selector",
+                    "post_id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-get-field-object",
+            "name": "renova-mcp-acf-get-field-object",
+            "group": "acf",
+            "label": "ACF: objeto de campo",
+            "description": "Devuelve la definición completa de un campo (tipo, etiqueta, opciones) y su valor. Envuelve get_field_object().",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "selector": {
+                        "type": "string",
+                        "description": "Nombre o clave (key) del campo ACF."
+                    },
+                    "post_id": {
+                        "type": [
+                            "string",
+                            "integer"
+                        ],
+                        "description": "ID del contenido. Acepta un ID numérico, \"option\" (página de opciones), \"user_X\" o \"term_X\"."
+                    }
+                },
+                "required": [
+                    "selector",
+                    "post_id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-get-fields",
+            "name": "renova-mcp-acf-get-fields",
+            "group": "acf",
+            "label": "ACF: todos los campos",
+            "description": "Devuelve todos los valores de campos ACF de un contenido. Envuelve get_fields().",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "post_id": {
+                        "type": [
+                            "string",
+                            "integer"
+                        ],
+                        "description": "ID del contenido. Acepta un ID numérico, \"option\" (página de opciones), \"user_X\" o \"term_X\"."
+                    }
+                },
+                "required": [
+                    "post_id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-get-field-objects",
+            "name": "renova-mcp-acf-get-field-objects",
+            "group": "acf",
+            "label": "ACF: objetos de todos los campos",
+            "description": "Devuelve las definiciones y valores de todos los campos de un contenido. Envuelve get_field_objects().",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "post_id": {
+                        "type": [
+                            "string",
+                            "integer"
+                        ],
+                        "description": "ID del contenido. Acepta un ID numérico, \"option\" (página de opciones), \"user_X\" o \"term_X\"."
+                    }
+                },
+                "required": [
+                    "post_id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-update-field",
+            "name": "renova-mcp-acf-update-field",
+            "group": "acf",
+            "label": "ACF: actualizar campo",
+            "description": "Crea o actualiza el valor de un campo ACF para un contenido. Envuelve update_field().",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "selector": {
+                        "type": "string",
+                        "description": "Nombre o clave (key) del campo ACF."
+                    },
+                    "value": {
+                        "description": "Nuevo valor (texto, número, booleano, array u objeto)."
+                    },
+                    "post_id": {
+                        "type": [
+                            "string",
+                            "integer"
+                        ],
+                        "description": "ID del contenido. Acepta un ID numérico, \"option\" (página de opciones), \"user_X\" o \"term_X\"."
+                    }
+                },
+                "required": [
+                    "selector",
+                    "value",
+                    "post_id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-delete-field",
+            "name": "renova-mcp-acf-delete-field",
+            "group": "acf",
+            "label": "ACF: eliminar campo",
+            "description": "Elimina el valor de un campo ACF de un contenido. Envuelve delete_field().",
+            "annotations": {
+                "readonly": false,
+                "destructive": true,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "selector": {
+                        "type": "string",
+                        "description": "Nombre o clave (key) del campo ACF."
+                    },
+                    "post_id": {
+                        "type": [
+                            "string",
+                            "integer"
+                        ],
+                        "description": "ID del contenido. Acepta un ID numérico, \"option\" (página de opciones), \"user_X\" o \"term_X\"."
+                    }
+                },
+                "required": [
+                    "selector",
+                    "post_id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-add-row",
+            "name": "renova-mcp-acf-add-row",
+            "group": "acf",
+            "label": "ACF: añadir fila (repeater)",
+            "description": "Añade una fila a un campo repeater/flexible. Envuelve add_row().",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": false
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "selector": {
+                        "type": "string",
+                        "description": "Nombre o clave (key) del campo ACF."
+                    },
+                    "row": {
+                        "type": "object",
+                        "description": "Objeto con los valores de los subcampos (nombre => valor)."
+                    },
+                    "post_id": {
+                        "type": [
+                            "string",
+                            "integer"
+                        ],
+                        "description": "ID del contenido. Acepta un ID numérico, \"option\" (página de opciones), \"user_X\" o \"term_X\"."
+                    }
+                },
+                "required": [
+                    "selector",
+                    "row",
+                    "post_id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-update-row",
+            "name": "renova-mcp-acf-update-row",
+            "group": "acf",
+            "label": "ACF: actualizar fila (repeater)",
+            "description": "Actualiza una fila concreta de un repeater por su índice (base 1). Envuelve update_row().",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "selector": {
+                        "type": "string",
+                        "description": "Nombre o clave (key) del campo ACF."
+                    },
+                    "row_index": {
+                        "type": "integer",
+                        "description": "Índice de la fila (empezando en 1)."
+                    },
+                    "row": {
+                        "type": "object",
+                        "description": "Valores de los subcampos."
+                    },
+                    "post_id": {
+                        "type": [
+                            "string",
+                            "integer"
+                        ],
+                        "description": "ID del contenido. Acepta un ID numérico, \"option\" (página de opciones), \"user_X\" o \"term_X\"."
+                    }
+                },
+                "required": [
+                    "selector",
+                    "row_index",
+                    "row",
+                    "post_id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-delete-row",
+            "name": "renova-mcp-acf-delete-row",
+            "group": "acf",
+            "label": "ACF: eliminar fila (repeater)",
+            "description": "Elimina una fila de un repeater por su índice (base 1). Envuelve delete_row().",
+            "annotations": {
+                "readonly": false,
+                "destructive": true,
+                "idempotent": false
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "selector": {
+                        "type": "string",
+                        "description": "Nombre o clave (key) del campo ACF."
+                    },
+                    "row_index": {
+                        "type": "integer",
+                        "description": "Índice de la fila (empezando en 1)."
+                    },
+                    "post_id": {
+                        "type": [
+                            "string",
+                            "integer"
+                        ],
+                        "description": "ID del contenido. Acepta un ID numérico, \"option\" (página de opciones), \"user_X\" o \"term_X\"."
+                    }
+                },
+                "required": [
+                    "selector",
+                    "row_index",
+                    "post_id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-list-field-groups",
+            "name": "renova-mcp-acf-list-field-groups",
+            "group": "acf",
+            "label": "ACF: listar grupos de campos",
+            "description": "Lista todos los grupos de campos registrados. Envuelve acf_get_field_groups().",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object"
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-get-field-group",
+            "name": "renova-mcp-acf-get-field-group",
+            "group": "acf",
+            "label": "ACF: obtener grupo de campos",
+            "description": "Devuelve un grupo de campos por su clave (key) o ID. Envuelve acf_get_field_group().",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": [
+                            "string",
+                            "integer"
+                        ],
+                        "description": "Clave (ej. \"group_abc123\") o ID del grupo."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-get-fields-in-group",
+            "name": "renova-mcp-acf-get-fields-in-group",
+            "group": "acf",
+            "label": "ACF: campos de un grupo",
+            "description": "Devuelve las definiciones de los campos de un grupo. Envuelve acf_get_fields().",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "group": {
+                        "type": [
+                            "string",
+                            "integer"
+                        ],
+                        "description": "Clave o ID del grupo de campos."
+                    }
+                },
+                "required": [
+                    "group"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-create-field-group",
+            "name": "renova-mcp-acf-create-field-group",
+            "group": "acf",
+            "label": "ACF: crear grupo de campos",
+            "description": "Crea (importa) un grupo de campos con sus campos y reglas de ubicación. Envuelve acf_import_field_group(). Acepta el mismo formato que la exportación de ACF.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": false
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "field_group": {
+                        "type": "object",
+                        "description": "Definición del grupo: title, fields (array), location (array), etc."
+                    }
+                },
+                "required": [
+                    "field_group"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-update-field-group",
+            "name": "renova-mcp-acf-update-field-group",
+            "group": "acf",
+            "label": "ACF: actualizar grupo de campos",
+            "description": "Actualiza las propiedades de un grupo de campos existente. Envuelve acf_update_field_group().",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "field_group": {
+                        "type": "object",
+                        "description": "Grupo con su \"key\" e ID y las propiedades a cambiar."
+                    }
+                },
+                "required": [
+                    "field_group"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-delete-field-group",
+            "name": "renova-mcp-acf-delete-field-group",
+            "group": "acf",
+            "label": "ACF: eliminar grupo de campos",
+            "description": "Elimina un grupo de campos. Acción destructiva. Envuelve acf_delete_field_group().",
+            "annotations": {
+                "readonly": false,
+                "destructive": true,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": [
+                            "string",
+                            "integer"
+                        ],
+                        "description": "Clave o ID del grupo."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-export-field-group",
+            "name": "renova-mcp-acf-export-field-group",
+            "group": "acf",
+            "label": "ACF: exportar grupo de campos",
+            "description": "Exporta un grupo de campos a un array portable (apto para crear el mismo grupo en otro sitio). Envuelve acf_export_field_group().",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": [
+                            "string",
+                            "integer"
+                        ],
+                        "description": "Clave o ID del grupo."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-list-post-types",
+            "name": "renova-mcp-acf-list-post-types",
+            "group": "acf",
+            "label": "ACF: listar tipos de contenido",
+            "description": "Lista todos los Custom Post Types creados con ACF (su key, slug, título y estado). Envuelve acf_get_acf_post_types().",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object"
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-types-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-get-post-type",
+            "name": "renova-mcp-acf-get-post-type",
+            "group": "acf",
+            "label": "ACF: obtener tipo de contenido",
+            "description": "Devuelve la definición completa de un CPT de ACF por su key (ej. \"post_type_abc123\"), ID o slug. Envuelve acf_get_post_type().",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": [
+                            "string",
+                            "integer"
+                        ],
+                        "description": "Key (post_type_xxx), ID o slug del CPT."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-types-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-save-post-type",
+            "name": "renova-mcp-acf-save-post-type",
+            "group": "acf",
+            "label": "ACF: crear o actualizar tipo de contenido",
+            "description": "Crea un nuevo CPT o actualiza uno existente. Para crear, indica al menos \"post_type\" (slug) y \"title\". Para actualizar, incluye también su \"key\" y/o \"ID\". Envuelve acf_update_post_type().",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "post_type": {
+                        "type": "object",
+                        "description": "Definición del CPT: post_type (slug, máx 20 car.), title, labels, public, hierarchical, supports, has_archive, menu_icon, etc. Mismo formato que la exportación de ACF."
+                    }
+                },
+                "required": [
+                    "post_type"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-types-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-delete-post-type",
+            "name": "renova-mcp-acf-delete-post-type",
+            "group": "acf",
+            "label": "ACF: eliminar tipo de contenido",
+            "description": "Elimina por completo un CPT de ACF por su key o ID. Acción destructiva (no borra las entradas existentes de ese tipo, solo el registro del CPT). Envuelve acf_delete_post_type().",
+            "annotations": {
+                "readonly": false,
+                "destructive": true,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": [
+                            "string",
+                            "integer"
+                        ],
+                        "description": "Key o ID del CPT."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-types-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-export-post-type",
+            "name": "renova-mcp-acf-export-post-type",
+            "group": "acf",
+            "label": "ACF: exportar tipo de contenido",
+            "description": "Devuelve la definición portable de un CPT (apta para recrearlo). Envuelve acf_get_post_type() + acf_prepare_post_type_for_export().",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": [
+                            "string",
+                            "integer"
+                        ],
+                        "description": "Key o ID del CPT."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-types-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-list-taxonomies",
+            "name": "renova-mcp-acf-list-taxonomies",
+            "group": "acf",
+            "label": "ACF: listar taxonomías",
+            "description": "Lista todas las taxonomías creadas con ACF (key, slug, título, tipos de objeto y estado). Envuelve acf_get_acf_taxonomies().",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object"
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-types-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-get-taxonomy",
+            "name": "renova-mcp-acf-get-taxonomy",
+            "group": "acf",
+            "label": "ACF: obtener taxonomía",
+            "description": "Devuelve la definición completa de una taxonomía de ACF por su key (ej. \"taxonomy_abc123\"), ID o slug. Envuelve acf_get_taxonomy().",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": [
+                            "string",
+                            "integer"
+                        ],
+                        "description": "Key (taxonomy_xxx), ID o slug de la taxonomía."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-types-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-save-taxonomy",
+            "name": "renova-mcp-acf-save-taxonomy",
+            "group": "acf",
+            "label": "ACF: crear o actualizar taxonomía",
+            "description": "Crea una nueva taxonomía o actualiza una existente. Para crear, indica al menos \"taxonomy\" (slug), \"title\" y \"object_type\" (array de post types asociados). Para actualizar, incluye su \"key\" y/o \"ID\". Envuelve acf_update_taxonomy().",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "taxonomy": {
+                        "type": "object",
+                        "description": "Definición: taxonomy (slug, máx 32 car.), title, object_type (array), labels, hierarchical, public, show_in_rest, etc. Mismo formato que la exportación de ACF."
+                    }
+                },
+                "required": [
+                    "taxonomy"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-types-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-delete-taxonomy",
+            "name": "renova-mcp-acf-delete-taxonomy",
+            "group": "acf",
+            "label": "ACF: eliminar taxonomía",
+            "description": "Elimina por completo una taxonomía de ACF por su key o ID. Acción destructiva. Envuelve acf_delete_taxonomy().",
+            "annotations": {
+                "readonly": false,
+                "destructive": true,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": [
+                            "string",
+                            "integer"
+                        ],
+                        "description": "Key o ID de la taxonomía."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-types-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/acf-export-taxonomy",
+            "name": "renova-mcp-acf-export-taxonomy",
+            "group": "acf",
+            "label": "ACF: exportar taxonomía",
+            "description": "Devuelve la definición portable de una taxonomía (apta para recrearla). Envuelve acf_get_taxonomy() + acf_prepare_taxonomy_for_export().",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": [
+                            "string",
+                            "integer"
+                        ],
+                        "description": "Key o ID de la taxonomía."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-acf-types-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/list-post-types",
+            "name": "renova-mcp-list-post-types",
+            "group": "content",
+            "label": "Listar tipos de contenido registrados",
+            "description": "Lista todos los post types registrados en WordPress (nativos, de ACF y de otros plugins), con su slug, etiqueta y taxonomías asociadas.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "public_only": {
+                        "type": "boolean",
+                        "description": "Solo tipos públicos.",
+                        "default": false
+                    }
+                }
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-taxonomy-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/list-taxonomies",
+            "name": "renova-mcp-list-taxonomies",
+            "group": "content",
+            "label": "Listar taxonomías registradas",
+            "description": "Lista todas las taxonomías registradas en WordPress, con su slug, etiqueta, jerarquía y tipos de contenido asociados.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "post_type": {
+                        "type": "string",
+                        "description": "Filtrar por las taxonomías de un post type concreto."
+                    },
+                    "public_only": {
+                        "type": "boolean",
+                        "description": "Solo taxonomías públicas.",
+                        "default": false
+                    }
+                }
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-taxonomy-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/list-terms",
+            "name": "renova-mcp-list-terms",
+            "group": "content",
+            "label": "Listar términos",
+            "description": "Lista los términos de una taxonomía con filtros de búsqueda, jerarquía y cantidad. Envuelve get_terms().",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "taxonomy": {
+                        "type": "string",
+                        "description": "Slug de la taxonomía (ej. \"category\", \"post_tag\" o una propia)."
+                    },
+                    "search": {
+                        "type": "string",
+                        "description": "Término de búsqueda."
+                    },
+                    "hide_empty": {
+                        "type": "boolean",
+                        "description": "Ocultar términos sin contenido asociado.",
+                        "default": false
+                    },
+                    "parent": {
+                        "type": "integer",
+                        "description": "ID del término padre (para taxonomías jerárquicas)."
+                    },
+                    "number": {
+                        "type": "integer",
+                        "description": "Número máximo de resultados (máx. 500).",
+                        "default": 100
+                    }
+                },
+                "required": [
+                    "taxonomy"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-taxonomy-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/get-term",
+            "name": "renova-mcp-get-term",
+            "group": "content",
+            "label": "Obtener término",
+            "description": "Devuelve un término por su ID (y opcionalmente su taxonomía). Envuelve get_term().",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "term_id": {
+                        "type": "integer",
+                        "description": "ID del término."
+                    },
+                    "taxonomy": {
+                        "type": "string",
+                        "description": "Slug de la taxonomía (ej. \"category\", \"post_tag\" o una propia)."
+                    }
+                },
+                "required": [
+                    "term_id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-taxonomy-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/create-term",
+            "name": "renova-mcp-create-term",
+            "group": "content",
+            "label": "Crear término",
+            "description": "Crea un término (categoría, etiqueta o término propio) en una taxonomía. Envuelve wp_insert_term().",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": false
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "taxonomy": {
+                        "type": "string",
+                        "description": "Slug de la taxonomía (ej. \"category\", \"post_tag\" o una propia)."
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Nombre del término."
+                    },
+                    "slug": {
+                        "type": "string",
+                        "description": "Slug opcional."
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Descripción opcional."
+                    },
+                    "parent": {
+                        "type": "integer",
+                        "description": "ID del término padre (taxonomías jerárquicas)."
+                    }
+                },
+                "required": [
+                    "taxonomy",
+                    "name"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-taxonomy-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/update-term",
+            "name": "renova-mcp-update-term",
+            "group": "content",
+            "label": "Actualizar término",
+            "description": "Actualiza un término existente por su ID. Envuelve wp_update_term().",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "term_id": {
+                        "type": "integer",
+                        "description": "ID del término."
+                    },
+                    "taxonomy": {
+                        "type": "string",
+                        "description": "Slug de la taxonomía (ej. \"category\", \"post_tag\" o una propia)."
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "parent": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "term_id",
+                    "taxonomy"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-taxonomy-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/delete-term",
+            "name": "renova-mcp-delete-term",
+            "group": "content",
+            "label": "Eliminar término",
+            "description": "Elimina un término de una taxonomía. Acción destructiva. Envuelve wp_delete_term().",
+            "annotations": {
+                "readonly": false,
+                "destructive": true,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "term_id": {
+                        "type": "integer",
+                        "description": "ID del término."
+                    },
+                    "taxonomy": {
+                        "type": "string",
+                        "description": "Slug de la taxonomía (ej. \"category\", \"post_tag\" o una propia)."
+                    }
+                },
+                "required": [
+                    "term_id",
+                    "taxonomy"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-taxonomy-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/set-post-terms",
+            "name": "renova-mcp-set-post-terms",
+            "group": "content",
+            "label": "Asignar términos a una entrada",
+            "description": "Asigna (o añade) términos de una taxonomía a una entrada/CPT. Acepta IDs, slugs o nombres. Envuelve wp_set_object_terms().",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "post_id": {
+                        "type": "integer",
+                        "description": "ID de la entrada/CPT."
+                    },
+                    "taxonomy": {
+                        "type": "string",
+                        "description": "Slug de la taxonomía (ej. \"category\", \"post_tag\" o una propia)."
+                    },
+                    "terms": {
+                        "type": "array",
+                        "description": "Lista de términos: IDs (integer), slugs o nombres (string). Si la taxonomía no es jerárquica, los nombres inexistentes se crean.",
+                        "items": {
+                            "type": [
+                                "string",
+                                "integer"
+                            ]
+                        }
+                    },
+                    "append": {
+                        "type": "boolean",
+                        "description": "Si es true, añade a los términos existentes en lugar de reemplazarlos.",
+                        "default": false
+                    }
+                },
+                "required": [
+                    "post_id",
+                    "taxonomy",
+                    "terms"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-taxonomy-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/get-post-terms",
+            "name": "renova-mcp-get-post-terms",
+            "group": "content",
+            "label": "Obtener términos de una entrada",
+            "description": "Devuelve los términos asignados a una entrada/CPT en una taxonomía. Envuelve wp_get_object_terms().",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "post_id": {
+                        "type": "integer",
+                        "description": "ID de la entrada/CPT."
+                    },
+                    "taxonomy": {
+                        "type": [
+                            "string",
+                            "array"
+                        ],
+                        "description": "Slug de la taxonomía o array de slugs."
+                    }
+                },
+                "required": [
+                    "post_id",
+                    "taxonomy"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-taxonomy-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/elementor-list-content",
+            "name": "renova-mcp-elementor-list-content",
+            "group": "elementor",
+            "label": "Listar contenido Elementor",
+            "description": "Lista entradas/páginas/CPT indicando si están construidas con Elementor (edit_mode \"builder\").",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "post_type": {
+                        "type": "string",
+                        "description": "Tipo de contenido a listar.",
+                        "default": "page"
+                    },
+                    "number": {
+                        "type": "integer",
+                        "description": "Máximo de resultados.",
+                        "default": 50
+                    },
+                    "only_elementor": {
+                        "type": "boolean",
+                        "description": "Si es true, solo devuelve los construidos con Elementor.",
+                        "default": false
+                    }
+                }
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-elementor-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/elementor-get-data",
+            "name": "renova-mcp-elementor-get-data",
+            "group": "elementor",
+            "label": "Obtener datos Elementor",
+            "description": "Devuelve el árbol completo de `_elementor_data` (JSON decodificado) de una página.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de la página/entrada/CPT editada con Elementor."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-elementor-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/elementor-get-structure",
+            "name": "renova-mcp-elementor-get-structure",
+            "group": "elementor",
+            "label": "Estructura Elementor",
+            "description": "Devuelve un esquema simplificado del árbol (id, tipo, widgetType y una vista previa de texto) para entender la página sin todo el JSON.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de la página/entrada/CPT editada con Elementor."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-elementor-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/elementor-get-element",
+            "name": "renova-mcp-elementor-get-element",
+            "group": "elementor",
+            "label": "Obtener elemento Elementor",
+            "description": "Devuelve un único elemento (sección, contenedor, columna o widget) por su id, con todos sus ajustes.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de la página/entrada/CPT editada con Elementor."
+                    },
+                    "element_id": {
+                        "type": "string",
+                        "description": "ID del elemento dentro del árbol Elementor (7 caracteres)."
+                    }
+                },
+                "required": [
+                    "id",
+                    "element_id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-elementor-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/elementor-find-elements",
+            "name": "renova-mcp-elementor-find-elements",
+            "group": "elementor",
+            "label": "Buscar elementos Elementor",
+            "description": "Busca elementos por widgetType (ej. \"heading\", \"button\", \"image\") o por elType (section, container, column, widget).",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de la página/entrada/CPT editada con Elementor."
+                    },
+                    "widget_type": {
+                        "type": "string",
+                        "description": "Tipo de widget a buscar (ej. \"heading\", \"button\", \"text-editor\", \"image\")."
+                    },
+                    "el_type": {
+                        "type": "string",
+                        "description": "Tipo de elemento: section, container, column o widget."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-elementor-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/elementor-get-page-settings",
+            "name": "renova-mcp-elementor-get-page-settings",
+            "group": "elementor",
+            "label": "Ajustes de página Elementor",
+            "description": "Devuelve `_elementor_page_settings` (plantilla, fondo, padding, CSS personalizado de página, etc.).",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de la página/entrada/CPT editada con Elementor."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-elementor-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/elementor-update-data",
+            "name": "renova-mcp-elementor-update-data",
+            "group": "elementor",
+            "label": "Reemplazar datos Elementor",
+            "description": "Reemplaza por completo `_elementor_data` con un nuevo árbol JSON. Crea una copia de seguridad previa automática y regenera la caché. Acción potente.",
+            "annotations": {
+                "readonly": false,
+                "destructive": true,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de la página/entrada/CPT editada con Elementor."
+                    },
+                    "data": {
+                        "type": "array",
+                        "description": "Árbol Elementor completo (array de elementos de nivel superior). Acepta array u objeto JSON.",
+                        "items": {
+                            "type": "object"
+                        }
+                    }
+                },
+                "required": [
+                    "id",
+                    "data"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-elementor-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/elementor-update-element",
+            "name": "renova-mcp-elementor-update-element",
+            "group": "elementor",
+            "label": "Actualizar elemento Elementor",
+            "description": "Fusiona ajustes en un elemento/widget concreto por su id sin recargar toda la página. Ej.: cambiar el texto de un \"heading\" pasando settings {\"title\":\"Nuevo\"}.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de la página/entrada/CPT editada con Elementor."
+                    },
+                    "element_id": {
+                        "type": "string",
+                        "description": "ID del elemento a modificar."
+                    },
+                    "settings": {
+                        "type": "object",
+                        "description": "Ajustes a fusionar en `settings` del elemento."
+                    },
+                    "replace": {
+                        "type": "boolean",
+                        "description": "Si es true, reemplaza `settings` por completo en lugar de fusionar.",
+                        "default": false
+                    }
+                },
+                "required": [
+                    "id",
+                    "element_id",
+                    "settings"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-elementor-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/elementor-add-element",
+            "name": "renova-mcp-elementor-add-element",
+            "group": "elementor",
+            "label": "Añadir elemento Elementor",
+            "description": "Añade una sección, contenedor, columna o widget. Indica elType (y widgetType si es widget) + settings, o pasa un subárbol completo en \"element\". Los IDs se generan solos. parent_id vacío = nivel superior.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": false
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de la página/entrada/CPT editada con Elementor."
+                    },
+                    "parent_id": {
+                        "type": "string",
+                        "description": "ID del elemento contenedor. Vacío para añadir al nivel superior de la página."
+                    },
+                    "position": {
+                        "type": "integer",
+                        "description": "Índice donde insertar entre los hijos del padre (0 = primero). Por defecto, al final."
+                    },
+                    "el_type": {
+                        "type": "string",
+                        "description": "section, container, column o widget."
+                    },
+                    "widget_type": {
+                        "type": "string",
+                        "description": "Tipo de widget si el_type es \"widget\" (ej. \"heading\", \"button\", \"image\", \"text-editor\")."
+                    },
+                    "settings": {
+                        "type": "object",
+                        "description": "Ajustes iniciales del elemento."
+                    },
+                    "element": {
+                        "type": "object",
+                        "description": "Alternativa: subárbol Elementor completo a insertar tal cual (se le regeneran los IDs)."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-elementor-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/elementor-delete-element",
+            "name": "renova-mcp-elementor-delete-element",
+            "group": "elementor",
+            "label": "Eliminar elemento Elementor",
+            "description": "Elimina un elemento (y sus hijos) por su id. Acción destructiva; se hace copia de seguridad previa.",
+            "annotations": {
+                "readonly": false,
+                "destructive": true,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de la página/entrada/CPT editada con Elementor."
+                    },
+                    "element_id": {
+                        "type": "string",
+                        "description": "ID del elemento a eliminar."
+                    }
+                },
+                "required": [
+                    "id",
+                    "element_id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-elementor-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/elementor-move-element",
+            "name": "renova-mcp-elementor-move-element",
+            "group": "elementor",
+            "label": "Mover elemento Elementor",
+            "description": "Mueve un elemento a otro padre y/o posición.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de la página/entrada/CPT editada con Elementor."
+                    },
+                    "element_id": {
+                        "type": "string",
+                        "description": "ID del elemento a mover."
+                    },
+                    "new_parent_id": {
+                        "type": "string",
+                        "description": "ID del nuevo padre. Vacío para moverlo al nivel superior."
+                    },
+                    "position": {
+                        "type": "integer",
+                        "description": "Índice destino entre los hijos del nuevo padre. Por defecto, al final."
+                    }
+                },
+                "required": [
+                    "id",
+                    "element_id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-elementor-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/elementor-duplicate-element",
+            "name": "renova-mcp-elementor-duplicate-element",
+            "group": "elementor",
+            "label": "Duplicar elemento Elementor",
+            "description": "Clona un elemento (y sus hijos) con nuevos IDs, insertándolo justo después del original.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": false
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de la página/entrada/CPT editada con Elementor."
+                    },
+                    "element_id": {
+                        "type": "string",
+                        "description": "ID del elemento a duplicar."
+                    }
+                },
+                "required": [
+                    "id",
+                    "element_id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-elementor-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/elementor-reorder-elements",
+            "name": "renova-mcp-elementor-reorder-elements",
+            "group": "elementor",
+            "label": "Reordenar elementos Elementor",
+            "description": "Reordena los hijos directos de un padre según una lista de IDs. parent_id vacío = nivel superior.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de la página/entrada/CPT editada con Elementor."
+                    },
+                    "parent_id": {
+                        "type": "string",
+                        "description": "ID del padre cuyos hijos se reordenan. Vacío = nivel superior."
+                    },
+                    "order": {
+                        "type": "array",
+                        "description": "Lista de IDs de hijos en el nuevo orden.",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": [
+                    "id",
+                    "order"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-elementor-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/elementor-update-page-settings",
+            "name": "renova-mcp-elementor-update-page-settings",
+            "group": "elementor",
+            "label": "Actualizar ajustes de página",
+            "description": "Fusiona ajustes en `_elementor_page_settings` (plantilla, fondo, CSS de página, etc.) y regenera la caché.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de la página/entrada/CPT editada con Elementor."
+                    },
+                    "settings": {
+                        "type": "object",
+                        "description": "Ajustes a fusionar."
+                    }
+                },
+                "required": [
+                    "id",
+                    "settings"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-elementor-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/elementor-backup-data",
+            "name": "renova-mcp-elementor-backup-data",
+            "group": "elementor",
+            "label": "Copia de seguridad Elementor",
+            "description": "Guarda una copia del `_elementor_data` actual en un meta de respaldo y devuelve su marca de tiempo.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de la página/entrada/CPT editada con Elementor."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-elementor-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/elementor-restore-backup",
+            "name": "renova-mcp-elementor-restore-backup",
+            "group": "elementor",
+            "label": "Restaurar copia Elementor",
+            "description": "Restaura el último respaldo guardado de `_elementor_data` y regenera la caché.",
+            "annotations": {
+                "readonly": false,
+                "destructive": true,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de la página/entrada/CPT editada con Elementor."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-elementor-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/elementor-clear-cache",
+            "name": "renova-mcp-elementor-clear-cache",
+            "group": "elementor",
+            "label": "Limpiar caché Elementor",
+            "description": "Regenera el CSS de Elementor. Sin \"id\" limpia toda la caché del sitio; con \"id\" solo la de esa página.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de página para limpiar solo su caché (opcional)."
+                    }
+                }
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-elementor-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/elementor-list-templates",
+            "name": "renova-mcp-elementor-list-templates",
+            "group": "elementor",
+            "label": "Listar plantillas Elementor",
+            "description": "Lista las plantillas de la biblioteca (CPT elementor_library): páginas, secciones, contenedores, cabeceras, pies, popups, etc.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "description": "Filtra por tipo de plantilla (page, section, container, header, footer, popup, etc.)."
+                    }
+                }
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-elementor-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/elementor-get-template",
+            "name": "renova-mcp-elementor-get-template",
+            "group": "elementor",
+            "label": "Obtener plantilla Elementor",
+            "description": "Devuelve el árbol JSON de una plantilla de la biblioteca por su ID.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de la página/entrada/CPT editada con Elementor."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-elementor-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/elementor-create-template",
+            "name": "renova-mcp-elementor-create-template",
+            "group": "elementor",
+            "label": "Crear plantilla Elementor",
+            "description": "Crea una plantilla en la biblioteca a partir de un árbol JSON, o copiando el contenido de una página existente (source_id).",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": false
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Nombre de la plantilla."
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "Tipo de plantilla (page, section, container, header, footer, popup...).",
+                        "default": "page"
+                    },
+                    "data": {
+                        "type": "array",
+                        "description": "Árbol Elementor de la plantilla.",
+                        "items": {
+                            "type": "object"
+                        }
+                    },
+                    "source_id": {
+                        "type": "integer",
+                        "description": "Alternativa a \"data\": ID de una página existente de la que copiar el contenido."
+                    }
+                },
+                "required": [
+                    "title"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-elementor-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/elementor-apply-template",
+            "name": "renova-mcp-elementor-apply-template",
+            "group": "elementor",
+            "label": "Aplicar plantilla Elementor",
+            "description": "Inserta el contenido de una plantilla en una página: \"replace\" sustituye el contenido o \"append\" lo añade al final. Regenera la caché.",
+            "annotations": {
+                "readonly": false,
+                "destructive": true,
+                "idempotent": false
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de la página destino."
+                    },
+                    "template_id": {
+                        "type": "integer",
+                        "description": "ID de la plantilla a aplicar."
+                    },
+                    "mode": {
+                        "type": "string",
+                        "description": "\"replace\" (por defecto) o \"append\".",
+                        "default": "replace"
+                    }
+                },
+                "required": [
+                    "id",
+                    "template_id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-elementor-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/elementor-get-global-settings",
+            "name": "renova-mcp-elementor-get-global-settings",
+            "group": "elementor",
+            "label": "Ajustes globales Elementor",
+            "description": "Devuelve los ajustes del kit activo: colores del sistema y personalizados, tipografías globales y ajustes del sitio.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object"
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-elementor-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/elementor-update-global-settings",
+            "name": "renova-mcp-elementor-update-global-settings",
+            "group": "elementor",
+            "label": "Actualizar ajustes globales",
+            "description": "Fusiona ajustes en el kit activo (colores, tipografías, layout del sitio) y regenera la caché global.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "settings": {
+                        "type": "object",
+                        "description": "Ajustes del kit a fusionar (ej. system_colors, custom_colors, system_typography, custom_typography)."
+                    }
+                },
+                "required": [
+                    "settings"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-elementor-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/rankmath-get-post-seo",
+            "name": "renova-mcp-rankmath-get-post-seo",
+            "group": "rankmath",
+            "label": "Leer SEO de contenido (Rank Math)",
+            "description": "Devuelve los metadatos SEO de Rank Math de una entrada: título, descripción, palabra clave objetivo, robots, canonical, OpenGraph, Twitter y puntuación SEO.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de la entrada/página/CPT."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-rankmath-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/rankmath-update-post-seo",
+            "name": "renova-mcp-rankmath-update-post-seo",
+            "group": "rankmath",
+            "label": "Actualizar SEO de contenido (Rank Math)",
+            "description": "Fija el título SEO, descripción, palabra(s) clave objetivo, robots, canonical, breadcrumb, contenido pilar y campos OpenGraph/Twitter de una entrada.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de la entrada/página/CPT."
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Título SEO (admite variables Rank Math como %title%)."
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Meta descripción."
+                    },
+                    "focus_keyword": {
+                        "type": "string",
+                        "description": "Palabra(s) clave objetivo, separadas por comas."
+                    },
+                    "canonical_url": {
+                        "type": "string",
+                        "description": "URL canónica."
+                    },
+                    "robots": {
+                        "type": "array",
+                        "description": "Directivas robots: index, noindex, nofollow, noarchive, noimageindex, nosnippet.",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "breadcrumb_title": {
+                        "type": "string",
+                        "description": "Título para las migas de pan."
+                    },
+                    "pillar_content": {
+                        "type": "boolean",
+                        "description": "Marca el contenido como pilar."
+                    },
+                    "facebook_title": {
+                        "type": "string"
+                    },
+                    "facebook_description": {
+                        "type": "string"
+                    },
+                    "facebook_image": {
+                        "type": "string"
+                    },
+                    "twitter_title": {
+                        "type": "string"
+                    },
+                    "twitter_description": {
+                        "type": "string"
+                    },
+                    "twitter_image": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-rankmath-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/rankmath-get-post-schema",
+            "name": "renova-mcp-rankmath-get-post-schema",
+            "group": "rankmath",
+            "label": "Leer Schema de contenido (Rank Math)",
+            "description": "Devuelve todos los datos de Schema (marcado estructurado) aplicados a una entrada.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de la entrada/página/CPT."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-rankmath-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/rankmath-set-post-schema",
+            "name": "renova-mcp-rankmath-set-post-schema",
+            "group": "rankmath",
+            "label": "Fijar Schema de contenido (Rank Math)",
+            "description": "Crea o reemplaza un bloque de Schema (ej. Article, FAQPage, Product) en una entrada. \"data\" es el array de propiedades del schema.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de la entrada/página/CPT."
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "Tipo de Schema (Article, FAQPage, Product, HowTo, Recipe, etc.)."
+                    },
+                    "data": {
+                        "type": "object",
+                        "description": "Propiedades del schema. Debe incluir al menos @type y metadata."
+                    }
+                },
+                "required": [
+                    "id",
+                    "type",
+                    "data"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-rankmath-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/rankmath-delete-post-schema",
+            "name": "renova-mcp-rankmath-delete-post-schema",
+            "group": "rankmath",
+            "label": "Eliminar Schema de contenido (Rank Math)",
+            "description": "Elimina un bloque de Schema de una entrada por su tipo.",
+            "annotations": {
+                "readonly": false,
+                "destructive": true,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de la entrada/página/CPT."
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "Tipo de Schema a eliminar."
+                    }
+                },
+                "required": [
+                    "id",
+                    "type"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-rankmath-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/rankmath-get-settings",
+            "name": "renova-mcp-rankmath-get-settings",
+            "group": "rankmath",
+            "label": "Leer ajustes globales (Rank Math)",
+            "description": "Devuelve un grupo de ajustes globales de Rank Math: \"general\", \"titles\" (títulos y meta por tipo de contenido) o \"sitemap\".",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "group": {
+                        "type": "string",
+                        "description": "Grupo: general, titles o sitemap.",
+                        "default": "general"
+                    }
+                }
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-rankmath-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/rankmath-update-settings",
+            "name": "renova-mcp-rankmath-update-settings",
+            "group": "rankmath",
+            "label": "Actualizar ajustes globales (Rank Math)",
+            "description": "Fusiona ajustes en un grupo global de Rank Math (general, titles o sitemap) y refresca su caché.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "group": {
+                        "type": "string",
+                        "description": "Grupo: general, titles o sitemap."
+                    },
+                    "settings": {
+                        "type": "object",
+                        "description": "Ajustes a fusionar."
+                    }
+                },
+                "required": [
+                    "group",
+                    "settings"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-rankmath-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/rankmath-list-redirections",
+            "name": "renova-mcp-rankmath-list-redirections",
+            "group": "rankmath",
+            "label": "Listar redirecciones (Rank Math)",
+            "description": "Lista las redirecciones configuradas en Rank Math con su origen, destino, código y estado.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "number": {
+                        "type": "integer",
+                        "description": "Máximo de resultados.",
+                        "default": 100
+                    }
+                }
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-rankmath-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/rankmath-add-redirection",
+            "name": "renova-mcp-rankmath-add-redirection",
+            "group": "rankmath",
+            "label": "Crear redirección (Rank Math)",
+            "description": "Crea una redirección de una o varias URL de origen a un destino con el código indicado (301, 302, 307, 410, 451).",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": false
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "sources": {
+                        "type": "array",
+                        "description": "URL(s) o patrones de origen.",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "url_to": {
+                        "type": "string",
+                        "description": "URL de destino."
+                    },
+                    "comparison": {
+                        "type": "string",
+                        "description": "Tipo de coincidencia: exact, contains, start, end, regex.",
+                        "default": "exact"
+                    },
+                    "header_code": {
+                        "type": "string",
+                        "description": "Código HTTP: 301, 302, 307, 410 o 451.",
+                        "default": "301"
+                    }
+                },
+                "required": [
+                    "sources",
+                    "url_to"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-rankmath-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/rankmath-update-redirection",
+            "name": "renova-mcp-rankmath-update-redirection",
+            "group": "rankmath",
+            "label": "Actualizar redirección (Rank Math)",
+            "description": "Actualiza el destino, código o estado (active/inactive) de una redirección por su id.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de la redirección."
+                    },
+                    "url_to": {
+                        "type": "string"
+                    },
+                    "header_code": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "active o inactive."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-rankmath-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/rankmath-delete-redirection",
+            "name": "renova-mcp-rankmath-delete-redirection",
+            "group": "rankmath",
+            "label": "Eliminar redirección (Rank Math)",
+            "description": "Elimina una redirección por su id.",
+            "annotations": {
+                "readonly": false,
+                "destructive": true,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID de la redirección a eliminar."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-rankmath-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/rankmath-get-404-log",
+            "name": "renova-mcp-rankmath-get-404-log",
+            "group": "rankmath",
+            "label": "Leer registro 404 (Rank Math)",
+            "description": "Devuelve las entradas del monitor de errores 404 de Rank Math (URI, accesos, fecha).",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "number": {
+                        "type": "integer",
+                        "description": "Máximo de resultados.",
+                        "default": 100
+                    }
+                }
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-rankmath-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/rankmath-clear-404-log",
+            "name": "renova-mcp-rankmath-clear-404-log",
+            "group": "rankmath",
+            "label": "Vaciar registro 404 (Rank Math)",
+            "description": "Borra todas las entradas del monitor de errores 404.",
+            "annotations": {
+                "readonly": false,
+                "destructive": true,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object"
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-rankmath-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/list-users",
+            "name": "renova-mcp-list-users",
+            "group": "users",
+            "label": "Listar usuarios",
+            "description": "Lista usuarios con su rol, email y login. Permite filtrar por rol y buscar.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "role": {
+                        "type": "string",
+                        "description": "Filtra por rol (administrator, editor, author, etc.)."
+                    },
+                    "search": {
+                        "type": "string",
+                        "description": "Término de búsqueda (login, email, nombre)."
+                    },
+                    "number": {
+                        "type": "integer",
+                        "description": "Máximo de resultados.",
+                        "default": 50
+                    }
+                }
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-users-media-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/get-user",
+            "name": "renova-mcp-get-user",
+            "group": "users",
+            "label": "Obtener usuario",
+            "description": "Devuelve los datos de un usuario por su ID, login o email.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID del usuario."
+                    },
+                    "login": {
+                        "type": "string",
+                        "description": "Login del usuario (alternativa a id)."
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "Email del usuario (alternativa a id)."
+                    }
+                }
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-users-media-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/create-user",
+            "name": "renova-mcp-create-user",
+            "group": "users",
+            "label": "Crear usuario",
+            "description": "Crea un usuario con login, email, contraseña y rol.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": false
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "Contraseña. Si se omite, se genera una segura."
+                    },
+                    "role": {
+                        "type": "string",
+                        "description": "Rol (subscriber por defecto).",
+                        "default": "subscriber"
+                    },
+                    "display_name": {
+                        "type": "string"
+                    },
+                    "first_name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "username",
+                    "email"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-users-media-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/update-user",
+            "name": "renova-mcp-update-user",
+            "group": "users",
+            "label": "Actualizar usuario",
+            "description": "Actualiza datos de un usuario: email, rol, contraseña, nombre. Acepta cualquier combinación.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID del usuario."
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "string"
+                    },
+                    "display_name": {
+                        "type": "string"
+                    },
+                    "first_name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-users-media-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/delete-user",
+            "name": "renova-mcp-delete-user",
+            "group": "users",
+            "label": "Eliminar usuario",
+            "description": "Elimina un usuario. Opcionalmente reasigna su contenido a otro usuario. Acción destructiva.",
+            "annotations": {
+                "readonly": false,
+                "destructive": true,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID del usuario a eliminar."
+                    },
+                    "reassign": {
+                        "type": "integer",
+                        "description": "ID del usuario al que reasignar el contenido (opcional)."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-users-media-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/list-media",
+            "name": "renova-mcp-list-media",
+            "group": "content",
+            "label": "Listar medios",
+            "description": "Lista archivos de la biblioteca de medios con su URL, tipo MIME y título.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "search": {
+                        "type": "string"
+                    },
+                    "mime_type": {
+                        "type": "string",
+                        "description": "Filtra por tipo MIME (ej. \"image\", \"image/png\", \"application/pdf\")."
+                    },
+                    "number": {
+                        "type": "integer",
+                        "description": "Máximo de resultados.",
+                        "default": 30
+                    }
+                }
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-users-media-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/get-media",
+            "name": "renova-mcp-get-media",
+            "group": "content",
+            "label": "Obtener medio",
+            "description": "Devuelve los datos de un adjunto: URL, tipo, metadatos, tamaños y texto alternativo.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID del adjunto."
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-users-media-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/upload-media",
+            "name": "renova-mcp-upload-media",
+            "group": "content",
+            "label": "Subir medio desde URL",
+            "description": "Descarga un archivo desde una URL y lo añade a la biblioteca de medios. Opcionalmente lo adjunta a una entrada y fija título/alt.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": false
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "description": "URL del archivo a importar."
+                    },
+                    "post_id": {
+                        "type": "integer",
+                        "description": "ID de la entrada a la que adjuntar (opcional)."
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "alt": {
+                        "type": "string",
+                        "description": "Texto alternativo de la imagen."
+                    },
+                    "featured": {
+                        "type": "boolean",
+                        "description": "Si es true y hay post_id, lo fija como imagen destacada.",
+                        "default": false
+                    }
+                },
+                "required": [
+                    "url"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-users-media-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/delete-media",
+            "name": "renova-mcp-delete-media",
+            "group": "content",
+            "label": "Eliminar medio",
+            "description": "Elimina un adjunto de la biblioteca de medios (y su archivo). Acción destructiva.",
+            "annotations": {
+                "readonly": false,
+                "destructive": true,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID del adjunto."
+                    },
+                    "force": {
+                        "type": "boolean",
+                        "description": "Eliminar definitivamente (sin papelera).",
+                        "default": true
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-users-media-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/set-featured-image",
+            "name": "renova-mcp-set-featured-image",
+            "group": "content",
+            "label": "Fijar imagen destacada",
+            "description": "Asigna (o quita) la imagen destacada de una entrada usando el ID de un adjunto existente.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "post_id": {
+                        "type": "integer",
+                        "description": "ID de la entrada."
+                    },
+                    "attachment_id": {
+                        "type": "integer",
+                        "description": "ID del adjunto. Usa 0 para quitar la imagen destacada."
+                    }
+                },
+                "required": [
+                    "post_id",
+                    "attachment_id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-users-media-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/list-menus",
+            "name": "renova-mcp-list-menus",
+            "group": "content",
+            "label": "Listar menús",
+            "description": "Lista los menús de navegación con su número de elementos y ubicaciones asignadas.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object"
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-site-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/get-menu",
+            "name": "renova-mcp-get-menu",
+            "group": "content",
+            "label": "Obtener menú",
+            "description": "Devuelve los elementos de un menú por su ID, nombre o slug.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "menu": {
+                        "type": "string",
+                        "description": "ID, nombre o slug del menú."
+                    }
+                },
+                "required": [
+                    "menu"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-site-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/create-menu",
+            "name": "renova-mcp-create-menu",
+            "group": "content",
+            "label": "Crear menú",
+            "description": "Crea un menú de navegación vacío con el nombre indicado.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": false
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Nombre del menú."
+                    }
+                },
+                "required": [
+                    "name"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-site-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/add-menu-item",
+            "name": "renova-mcp-add-menu-item",
+            "group": "content",
+            "label": "Añadir elemento al menú",
+            "description": "Añade un elemento a un menú: enlace a una entrada/página (object_id), una URL personalizada, o un término de taxonomía.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": false
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "menu": {
+                        "type": "string",
+                        "description": "ID, nombre o slug del menú."
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Texto del enlace."
+                    },
+                    "url": {
+                        "type": "string",
+                        "description": "URL personalizada (para enlaces personalizados)."
+                    },
+                    "object_id": {
+                        "type": "integer",
+                        "description": "ID de la entrada/página a enlazar."
+                    },
+                    "object": {
+                        "type": "string",
+                        "description": "Tipo de objeto enlazado (post, page, category, etc.). Por defecto \"page\" si hay object_id."
+                    },
+                    "parent": {
+                        "type": "integer",
+                        "description": "ID del elemento de menú padre (para submenús)."
+                    }
+                },
+                "required": [
+                    "menu",
+                    "title"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-site-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/delete-menu-item",
+            "name": "renova-mcp-delete-menu-item",
+            "group": "content",
+            "label": "Eliminar elemento del menú",
+            "description": "Elimina un elemento de un menú por su ID.",
+            "annotations": {
+                "readonly": false,
+                "destructive": true,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "item_id": {
+                        "type": "integer",
+                        "description": "ID del elemento del menú."
+                    }
+                },
+                "required": [
+                    "item_id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-site-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/assign-menu-location",
+            "name": "renova-mcp-assign-menu-location",
+            "group": "content",
+            "label": "Asignar menú a ubicación",
+            "description": "Asigna un menú a una ubicación registrada por el tema (ej. \"primary\", \"footer\").",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "menu": {
+                        "type": "string",
+                        "description": "ID, nombre o slug del menú."
+                    },
+                    "location": {
+                        "type": "string",
+                        "description": "Slug de la ubicación del tema."
+                    }
+                },
+                "required": [
+                    "menu",
+                    "location"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-site-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/list-comments",
+            "name": "renova-mcp-list-comments",
+            "group": "content",
+            "label": "Listar comentarios",
+            "description": "Lista comentarios con filtros de estado (approve, hold, spam, trash) y entrada.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "approve, hold, spam, trash o all.",
+                        "default": "all"
+                    },
+                    "post_id": {
+                        "type": "integer",
+                        "description": "Filtra por entrada."
+                    },
+                    "number": {
+                        "type": "integer",
+                        "description": "Máximo de resultados.",
+                        "default": 50
+                    }
+                }
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-site-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/moderate-comment",
+            "name": "renova-mcp-moderate-comment",
+            "group": "content",
+            "label": "Moderar comentario",
+            "description": "Cambia el estado de un comentario: approve, hold, spam o trash.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID del comentario."
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "approve, hold, spam o trash."
+                    }
+                },
+                "required": [
+                    "id",
+                    "status"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-site-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/delete-comment",
+            "name": "renova-mcp-delete-comment",
+            "group": "content",
+            "label": "Eliminar comentario",
+            "description": "Envía a la papelera o elimina definitivamente un comentario.",
+            "annotations": {
+                "readonly": false,
+                "destructive": true,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "ID del comentario."
+                    },
+                    "force": {
+                        "type": "boolean",
+                        "description": "Eliminar definitivamente.",
+                        "default": false
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-site-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/get-permalink-structure",
+            "name": "renova-mcp-get-permalink-structure",
+            "group": "site",
+            "label": "Leer estructura de enlaces",
+            "description": "Devuelve la estructura de enlaces permanentes (permalinks) actual.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object"
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-site-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/update-permalink-structure",
+            "name": "renova-mcp-update-permalink-structure",
+            "group": "site",
+            "label": "Actualizar estructura de enlaces",
+            "description": "Cambia la estructura de permalinks y refresca las reglas de reescritura. Ej.: \"/%postname%/\" activa los enlaces bonitos y hace que /wp-json/ funcione.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "structure": {
+                        "type": "string",
+                        "description": "Estructura, ej. \"/%postname%/\". Cadena vacía = enlaces simples (query string)."
+                    }
+                },
+                "required": [
+                    "structure"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-site-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/flush-rewrite-rules",
+            "name": "renova-mcp-flush-rewrite-rules",
+            "group": "site",
+            "label": "Refrescar reglas de reescritura",
+            "description": "Regenera las reglas de reescritura (equivalente a guardar los Enlaces permanentes). Útil tras registrar CPT o cambiar permalinks.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object"
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-site-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/get-theme-mod",
+            "name": "renova-mcp-get-theme-mod",
+            "group": "site",
+            "label": "Leer theme mod",
+            "description": "Devuelve un ajuste del personalizador (theme mod) del tema activo, o todos si no se indica clave.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "key": {
+                        "type": "string",
+                        "description": "Clave del theme mod (opcional)."
+                    }
+                }
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-site-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/update-theme-mod",
+            "name": "renova-mcp-update-theme-mod",
+            "group": "site",
+            "label": "Actualizar theme mod",
+            "description": "Crea o actualiza un ajuste del personalizador (theme mod) del tema activo.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "key": {
+                        "type": "string",
+                        "description": "Clave del theme mod."
+                    },
+                    "value": {
+                        "description": "Valor."
+                    }
+                },
+                "required": [
+                    "key",
+                    "value"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-site-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/manage-transient",
+            "name": "renova-mcp-manage-transient",
+            "group": "site",
+            "label": "Gestionar transient",
+            "description": "Lee, fija o elimina un transient (caché temporal). action: get, set o delete.",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": false
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "action": {
+                        "type": "string",
+                        "description": "get, set o delete."
+                    },
+                    "key": {
+                        "type": "string",
+                        "description": "Nombre del transient."
+                    },
+                    "value": {
+                        "description": "Valor (para set)."
+                    },
+                    "expiration": {
+                        "type": "integer",
+                        "description": "Caducidad en segundos (para set). 0 = sin caducidad.",
+                        "default": 0
+                    }
+                },
+                "required": [
+                    "action",
+                    "key"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-site-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/check-updates",
+            "name": "renova-mcp-check-updates",
+            "group": "system",
+            "label": "Comprobar actualizaciones",
+            "description": "Comprueba actualizaciones disponibles del núcleo, plugins y temas.",
+            "annotations": {
+                "readonly": true,
+                "destructive": null,
+                "idempotent": null
+            },
+            "inputSchema": {
+                "type": "object"
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-site-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/run-update",
+            "name": "renova-mcp-run-update",
+            "group": "system",
+            "label": "Ejecutar actualización",
+            "description": "Actualiza un plugin o un tema a su última versión. type: plugin o theme; target: ruta del plugin o stylesheet del tema.",
+            "annotations": {
+                "readonly": false,
+                "destructive": true,
+                "idempotent": false
+            },
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "description": "plugin o theme."
+                    },
+                    "target": {
+                        "type": "string",
+                        "description": "Ruta del plugin (ej. \"akismet/akismet.php\") o stylesheet del tema."
+                    }
+                },
+                "required": [
+                    "type",
+                    "target"
+                ]
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-site-abilities.php"
+        },
+        {
+            "ability": "renova-mcp/flush-cache",
+            "name": "renova-mcp-flush-cache",
+            "group": "site",
+            "label": "Limpiar caché de objetos",
+            "description": "Vacía la caché de objetos de WordPress (wp_cache_flush).",
+            "annotations": {
+                "readonly": false,
+                "destructive": false,
+                "idempotent": true
+            },
+            "inputSchema": {
+                "type": "object"
+            },
+            "outputSchema": {
+                "type": "object"
+            },
+            "source": "includes/class-site-abilities.php"
+        }
+    ]
+}

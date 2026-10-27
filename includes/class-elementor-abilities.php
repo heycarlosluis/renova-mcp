@@ -235,6 +235,13 @@ class Elementor_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'update_data' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => true,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -267,6 +274,13 @@ class Elementor_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'update_element' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -310,6 +324,13 @@ class Elementor_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'add_element' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => false,
+					),
+				),
 			)
 		);
 
@@ -333,7 +354,13 @@ class Elementor_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'delete_element' ),
 				'permission_callback' => $perm,
-				'meta'                => array( 'annotations' => array( 'destructive' => true ) ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => true,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -365,6 +392,13 @@ class Elementor_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'move_element' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -388,6 +422,13 @@ class Elementor_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'duplicate_element' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => false,
+					),
+				),
 			)
 		);
 
@@ -416,6 +457,13 @@ class Elementor_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'reorder_elements' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -439,6 +487,13 @@ class Elementor_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'update_page_settings' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -457,6 +512,13 @@ class Elementor_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'backup_data' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -474,6 +536,13 @@ class Elementor_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'restore_backup' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => true,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -495,7 +564,13 @@ class Elementor_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'clear_cache' ),
 				'permission_callback' => $perm,
-				'meta'                => array( 'annotations' => array( 'idempotent' => true ) ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -573,6 +648,13 @@ class Elementor_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'create_template' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => false,
+					),
+				),
 			)
 		);
 
@@ -604,6 +686,13 @@ class Elementor_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'apply_template' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => true,
+						'idempotent'  => false,
+					),
+				),
 			)
 		);
 
@@ -641,6 +730,13 @@ class Elementor_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'update_global_settings' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 	}

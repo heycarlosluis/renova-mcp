@@ -139,6 +139,13 @@ class Acf_Types_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'save_post_type' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -161,7 +168,13 @@ class Acf_Types_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'delete_post_type' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
-				'meta'                => array( 'annotations' => array( 'destructive' => true ) ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => true,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -246,6 +259,13 @@ class Acf_Types_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'save_taxonomy' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -268,7 +288,13 @@ class Acf_Types_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'delete_taxonomy' ),
 				'permission_callback' => array( __CLASS__, 'can_manage' ),
-				'meta'                => array( 'annotations' => array( 'destructive' => true ) ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => true,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 

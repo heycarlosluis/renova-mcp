@@ -116,6 +116,13 @@ class Site_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'create_menu' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => false,
+					),
+				),
 			)
 		);
 
@@ -158,6 +165,13 @@ class Site_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'add_menu_item' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => false,
+					),
+				),
 			)
 		);
 
@@ -180,7 +194,13 @@ class Site_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'delete_menu_item' ),
 				'permission_callback' => $perm,
-				'meta'                => array( 'annotations' => array( 'destructive' => true ) ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => true,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -207,6 +227,13 @@ class Site_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'assign_menu_location' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -266,6 +293,13 @@ class Site_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'moderate_comment' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -293,7 +327,13 @@ class Site_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'delete_comment' ),
 				'permission_callback' => $perm,
-				'meta'                => array( 'annotations' => array( 'destructive' => true ) ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => true,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -331,6 +371,13 @@ class Site_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'update_permalink_structure' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -344,7 +391,13 @@ class Site_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'flush_rewrite_rules' ),
 				'permission_callback' => $perm,
-				'meta'                => array( 'annotations' => array( 'idempotent' => true ) ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -393,6 +446,13 @@ class Site_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'update_theme_mod' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 
@@ -428,6 +488,13 @@ class Site_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'manage_transient' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => false,
+					),
+				),
 			)
 		);
 
@@ -469,6 +536,13 @@ class Site_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'run_update' ),
 				'permission_callback' => $perm,
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => true,
+						'idempotent'  => false,
+					),
+				),
 			)
 		);
 
@@ -482,7 +556,13 @@ class Site_Abilities {
 				'output_schema'       => $obj,
 				'execute_callback'    => array( __CLASS__, 'flush_cache' ),
 				'permission_callback' => $perm,
-				'meta'                => array( 'annotations' => array( 'idempotent' => true ) ),
+				'meta'                => array(
+					'annotations' => array(
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => true,
+					),
+				),
 			)
 		);
 	}
